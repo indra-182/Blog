@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "velite dev & next dev",
-    "build": "velite build && next build",
-    "start": "next start",
-    "velite": "velite build",
+    "dev": "concurrently -n velite,next -c blue,green \"npx velite dev\" \"npx next dev\"",
+    "build": "npx velite build && npx next build",
+    "start": "npx next start",
+    "velite": "npx velite build",
     "lint": "eslint",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\""
@@ -23,6 +23,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^10.0.4",
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
     "eslint-config-prettier": "^10",
