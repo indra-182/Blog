@@ -56,6 +56,7 @@ export default defineConfig({
         date: s.isodate(),
         excerpt: s.string(),
         coverImage: s.string().optional(),
+        slug: s.string().optional(),
         category: s.string(),
         tags: s.array(s.string()),
         draft: s.boolean().default(false),

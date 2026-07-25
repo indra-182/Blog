@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { ThemeToggle } from './ThemeToggle'
 
 const navLinks = [
@@ -10,8 +11,8 @@ const navLinks = [
 export function Navbar() {
   return (
     <nav className="neo-card flex items-center justify-between mb-8">
-      <Link href="/" className="text-2xl font-black uppercase tracking-tight hover:text-(--neo-accent-1) transition-colors">
-        Indra&apos;s Blog
+      <Link href="/" className="flex items-center gap-2">
+        <Image src="/logo.svg" alt="Indra's Blog" width={100} height={28} className="h-7 w-auto" />
       </Link>
       <div className="flex items-center gap-6">
         {navLinks.map((link) => (

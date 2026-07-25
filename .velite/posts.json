@@ -4,6 +4,7 @@
     "date": "2026-07-20T00:00:00.000Z",
     "excerpt": "Tutorial singkat tentang membangun agent workflows dengan LangGraph — dari konsep graph state sampai tool calling.",
     "coverImage": "/static/langgraph-intro-cover.jpg",
+    "slug": "memulai-langgraph",
     "category": "agentic-ai",
     "tags": [
       "langgraph",
@@ -37,6 +38,7 @@
     "title": "Frontend Digest — 25 Jul 2026",
     "date": "2026-07-25T00:00:00.000Z",
     "excerpt": "5 link hari ini: React 19, CSS nesting, Turbopack, TypeScript 5.7, Web Animation.",
+    "slug": "frontend-digest-25-jul-2026",
     "category": "frontend",
     "tags": [
       "digest",
@@ -87,6 +89,7 @@
     "title": "Draft: Exploring AI Agents",
     "date": "2026-07-24T00:00:00.000Z",
     "excerpt": "Catatan awal tentang AI agents.",
+    "slug": "draft-exploring-ai-agents",
     "category": "agentic-ai",
     "tags": [
       "agents",

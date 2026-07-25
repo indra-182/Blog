@@ -2,8 +2,8 @@ import { posts } from '#velite'
 import readingTime from 'reading-time'
 import type { Post, TocEntry } from '@/types/post'
 
-function deriveSlug(p: { _path: string }): string {
-  return p._path.split('/').pop() ?? p._path
+function deriveSlug(p: { _path: string; slug?: string }): string {
+  return p.slug ?? (p._path.split('/').pop() ?? p._path)
 }
 
 function computeReadingTime(body: string): number {
