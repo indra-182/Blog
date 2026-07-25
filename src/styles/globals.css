@@ -27,7 +27,7 @@
       transform 0.1s;
   }
   .neo-btn:hover {
-    box-shadow: 7px 7px 0px 0px #000;
+    box-shadow: 7px 7px 0px 0px var(--neo-border);
     transform: translate(-1px, -1px);
   }
   .neo-btn:active {
@@ -45,13 +45,13 @@
     border: var(--border-thick) solid var(--neo-border);
     box-shadow: var(--shadow-neo);
     padding: var(--space-6);
-    background: #fff;
+    background: var(--neo-bg);
   }
 
   .neo-input {
     border: var(--border-thick) solid var(--neo-border);
     padding: var(--space-3);
-    background: #fff;
+    background: var(--neo-bg);
     font-weight: 500;
   }
   .neo-input:focus {
