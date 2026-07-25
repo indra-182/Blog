@@ -1,0 +1,33 @@
+---
+title: "Memulai Petualangan dengan LangGraph"
+date: 2026-07-20
+excerpt: "Tutorial singkat tentang membangun agent workflows dengan LangGraph — dari konsep graph state sampai tool calling."
+coverImage: "/static/langgraph-intro-cover.jpg"
+category: "agentic-ai"
+tags: [langgraph, agent, ai, tutorial]
+slug: memulai-langgraph
+type: article
+draft: false
+---
+
+## Apa itu LangGraph?
+
+LangGraph adalah framework untuk membangun agent workflows menggunakan graph-based state machine.
+
+## Kenapa Graph?
+
+Graph memungkinkan kita mendefinisikan flow kompleks dengan branching, looping, dan parallel execution.
+
+```python
+from langgraph.graph import StateGraph
+
+graph = StateGraph(AgentState)
+graph.add_node("agent", call_agent)
+graph.add_node("tools", call_tools)
+graph.set_entry_point("agent")
+```
+
+## Kesimpulan
+
+LangGraph memberikan kontrol granular atas agent behavior.
+
