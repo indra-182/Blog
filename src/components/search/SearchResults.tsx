@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { formatDate } from '@/lib/utils'
 
 interface SearchDoc {
   slug: string
@@ -18,7 +19,7 @@ function highlight(text: string, query: string) {
   const parts = text.split(re)
   return parts.map((part, i) =>
     re.test(part) ? (
-      <mark key={i} className="bg-[var(--neo-accent-3)] text-inherit font-bold">
+      <mark key={i} className="bg-(--neo-accent-3) text-inherit font-bold">
         {part}
       </mark>
     ) : (
@@ -43,10 +44,10 @@ export function SearchResults({ results, query, onSelect }: SearchResultsProps) 
           <Link
             href={`/posts/${doc.slug}`}
             onClick={onSelect}
-            className="block p-4 hover:bg-[var(--neo-accent-4)] transition-colors"
+            className="block p-4 hover:bg-(--neo-accent-4) transition-colors"
           >
-            <p className="text-sm font-bold uppercase text-[var(--neo-accent-2)]">
-              {doc.date} &middot; {doc.category}
+            <p className="text-sm font-bold uppercase text-(--neo-accent-2)">
+              {formatDate(doc.date)} &middot; {doc.category}
             </p>
             <p className="text-lg font-black mt-1">
               {highlight(doc.title, query)}

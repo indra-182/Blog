@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CurationCard } from './CurationCard'
 import type { Post } from '@/types/post'
+import { formatDate } from '@/lib/utils'
 
 export function PostHeader({ post }: { post: Post }) {
   return (
@@ -12,7 +13,7 @@ export function PostHeader({ post }: { post: Post }) {
         >
           {post.category}
         </Link>
-        <span>{post.date}</span>
+        <span>{formatDate(post.date)}</span>
         <span className="ml-auto">{post.readingTimeMinutes} min read</span>
       </div>
 
