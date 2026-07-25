@@ -1,0 +1,107 @@
+[
+  {
+    "title": "Memulai Petualangan dengan LangGraph",
+    "date": "2026-07-20T00:00:00.000Z",
+    "excerpt": "Tutorial singkat tentang membangun agent workflows dengan LangGraph — dari konsep graph state sampai tool calling.",
+    "coverImage": "/static/langgraph-intro-cover.jpg",
+    "category": "agentic-ai",
+    "tags": [
+      "langgraph",
+      "agent",
+      "ai",
+      "tutorial"
+    ],
+    "draft": false,
+    "type": "article",
+    "body": "const{Fragment:i,jsx:n,jsxs:a}=arguments[0];function _createMdxContent(e){const h={code:\"code\",figure:\"figure\",h2:\"h2\",p:\"p\",pre:\"pre\",span:\"span\",...e.components};return a(i,{children:[n(h.h2,{children:\"Apa itu LangGraph?\"}),\"\\n\",n(h.p,{children:\"LangGraph adalah framework untuk membangun agent workflows menggunakan graph-based state machine.\"}),\"\\n\",n(h.h2,{children:\"Kenapa Graph?\"}),\"\\n\",n(h.p,{children:\"Graph memungkinkan kita mendefinisikan flow kompleks dengan branching, looping, dan parallel execution.\"}),\"\\n\",n(h.figure,{\"data-rehype-pretty-code-figure\":\"\",children:n(h.pre,{tabIndex:\"0\",\"data-language\":\"python\",\"data-theme\":\"github-dark github-light\",children:a(h.code,{\"data-language\":\"python\",\"data-theme\":\"github-dark github-light\",style:{display:\"grid\"},children:[a(h.span,{\"data-line\":\"\",children:[n(h.span,{style:{\"--shiki-dark\":\"#F97583\",\"--shiki-light\":\"#D73A49\"},children:\"from\"}),n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\" langgraph.graph \"}),n(h.span,{style:{\"--shiki-dark\":\"#F97583\",\"--shiki-light\":\"#D73A49\"},children:\"import\"}),n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\" StateGraph\"})]}),\"\\n\",n(h.span,{\"data-line\":\"\",children:\" \"}),\"\\n\",a(h.span,{\"data-line\":\"\",children:[n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\"graph \"}),n(h.span,{style:{\"--shiki-dark\":\"#F97583\",\"--shiki-light\":\"#D73A49\"},children:\"=\"}),n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\" StateGraph(AgentState)\"})]}),\"\\n\",a(h.span,{\"data-line\":\"\",children:[n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\"graph.add_node(\"}),n(h.span,{style:{\"--shiki-dark\":\"#9ECBFF\",\"--shiki-light\":\"#032F62\"},children:'\"agent\"'}),n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\", call_agent)\"})]}),\"\\n\",a(h.span,{\"data-line\":\"\",children:[n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\"graph.add_node(\"}),n(h.span,{style:{\"--shiki-dark\":\"#9ECBFF\",\"--shiki-light\":\"#032F62\"},children:'\"tools\"'}),n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\", call_tools)\"})]}),\"\\n\",a(h.span,{\"data-line\":\"\",children:[n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\"graph.set_entry_point(\"}),n(h.span,{style:{\"--shiki-dark\":\"#9ECBFF\",\"--shiki-light\":\"#032F62\"},children:'\"agent\"'}),n(h.span,{style:{\"--shiki-dark\":\"#E1E4E8\",\"--shiki-light\":\"#24292E\"},children:\")\"})]})]})})}),\"\\n\",n(h.h2,{children:\"Kesimpulan\"}),\"\\n\",n(h.p,{children:\"LangGraph memberikan kontrol granular atas agent behavior.\"})]})}return{default:function(i={}){const{wrapper:a}=i.components||{};return a?n(a,{...i,children:n(_createMdxContent,{...i})}):_createMdxContent(i)}};",
+    "toc": [
+      {
+        "title": "Apa itu LangGraph?",
+        "url": "#apa-itu-langgraph",
+        "items": []
+      },
+      {
+        "title": "Kenapa Graph?",
+        "url": "#kenapa-graph",
+        "items": []
+      },
+      {
+        "title": "Kesimpulan",
+        "url": "#kesimpulan",
+        "items": []
+      }
+    ],
+    "_path": "posts/article"
+  },
+  {
+    "title": "Frontend Digest — 25 Jul 2026",
+    "date": "2026-07-25T00:00:00.000Z",
+    "excerpt": "5 link hari ini: React 19, CSS nesting, Turbopack, TypeScript 5.7, Web Animation.",
+    "category": "frontend",
+    "tags": [
+      "digest",
+      "frontend",
+      "react",
+      "css",
+      "typescript"
+    ],
+    "draft": false,
+    "type": "curation",
+    "items": [
+      {
+        "title": "React 19 Features",
+        "url": "https://react.dev/blog/2024/12/05/react-19",
+        "source": "React Blog",
+        "insight": "React 19 finally production-ready dengan compiler, actions, dan hooks baru yang mengurangi boilerplate."
+      },
+      {
+        "title": "CSS Nesting is Here to Stay",
+        "url": "https://developer.chrome.com/docs/css-ui/css-nesting",
+        "source": "Chrome Developers",
+        "insight": "CSS Nesting sudah didukung semua browser modern. Saatnya migrasi dari Sass."
+      },
+      {
+        "title": "Turbopack in Production",
+        "url": "https://nextjs.org/blog/turbopack",
+        "source": "Vercel Blog",
+        "insight": "Turbopack now default di Next.js 15. Build 10x lebih cepat dari webpack."
+      },
+      {
+        "title": "TypeScript 5.7: Better Error Messages",
+        "url": "https://devblogs.microsoft.com/typescript/announcing-typescript-5-7",
+        "source": "TypeScript Blog",
+        "insight": "Error messages jadi jauh lebih readable. Underrated quality-of-life improvement."
+      },
+      {
+        "title": "The State of Web Animation in 2026",
+        "url": "https://www.smashingmagazine.com/web-animation-2026",
+        "source": "Smashing Magazine",
+        "insight": "View Transitions API + WAAPI + CSS scroll-driven animations sudah mature untuk production."
+      }
+    ],
+    "body": "const{jsx:e}=arguments[0];function _createMdxContent(n){const t={em:\"em\",p:\"p\",...n.components};return e(t.p,{children:e(t.em,{children:\"No body content needed — items are in frontmatter.\"})})}return{default:function(n={}){const{wrapper:t}=n.components||{};return t?e(t,{...n,children:e(_createMdxContent,{...n})}):_createMdxContent(n)}};",
+    "toc": [],
+    "_path": "posts/curation"
+  },
+  {
+    "title": "Draft: Exploring AI Agents",
+    "date": "2026-07-24T00:00:00.000Z",
+    "excerpt": "Catatan awal tentang AI agents.",
+    "category": "agentic-ai",
+    "tags": [
+      "agents",
+      "ai"
+    ],
+    "draft": true,
+    "type": "article",
+    "body": "const{Fragment:n,jsx:t,jsxs:e}=arguments[0];function _createMdxContent(r){const c={h2:\"h2\",p:\"p\",...r.components};return e(n,{children:[t(c.h2,{children:\"Masih Draft\"}),\"\\n\",t(c.p,{children:\"Post ini belum siap publish. Tidak akan muncul di production build.\"})]})}return{default:function(n={}){const{wrapper:e}=n.components||{};return e?t(e,{...n,children:t(_createMdxContent,{...n})}):_createMdxContent(n)}};",
+    "toc": [
+      {
+        "title": "Masih Draft",
+        "url": "#masih-draft",
+        "items": []
+      }
+    ],
+    "_path": "posts/draft"
+  }
+]
