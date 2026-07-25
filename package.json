@@ -27,6 +27,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
     "eslint-config-prettier": "^10",
+    "playwright": "^1.62.0",
     "prettier": "^3",
     "reading-time": "^1.5.0",
     "rehype-pretty-code": "^0.14.4",
