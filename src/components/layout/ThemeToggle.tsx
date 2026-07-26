@@ -1,6 +1,6 @@
 'use client'
 
-import { Moon, Sun } from 'lucide-react'
+import { LuSun, LuMoon } from 'react-icons/lu'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
@@ -20,7 +20,7 @@ export function ThemeToggle() {
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
-      {isDark ? <Sun size={18} /> : <Moon size={18} />}
+      {isDark ? <LuSun size={18} /> : <LuMoon size={18} />}
     </button>
   )
 }

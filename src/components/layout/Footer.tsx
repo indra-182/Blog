@@ -1,10 +1,12 @@
-import Link from 'next/link';
+import { FaGithub } from 'react-icons/fa'
+import { FaXTwitter } from 'react-icons/fa6'
+import { FaLinkedinIn } from 'react-icons/fa'
 
 const socialLinks = [
-  { href: 'https://github.com/indra-182', label: 'GitHub' },
-  { href: 'https://twitter.com/vwxmz', label: 'Twitter' },
-  { href: 'https://www.linkedin.com/in/mahadiindra182/', label: 'LinkedIn' },
-];
+  { href: 'https://github.com/indra-182', icon: FaGithub, label: 'GitHub' },
+  { href: 'https://twitter.com/vwxmz', icon: FaXTwitter, label: 'Twitter' },
+  { href: 'https://www.linkedin.com/in/mahadiindra182/', icon: FaLinkedinIn, label: 'LinkedIn' },
+]
 
 export function Footer() {
   return (
@@ -12,19 +14,21 @@ export function Footer() {
       <p className="text-sm font-bold">
         &copy; {new Date().getFullYear()} Indra&apos;s Blog. All rights reserved.
       </p>
-      <div className="flex items-center gap-4">
-        {socialLinks.map((link) => (
-          <Link
-            key={link.label}
-            href={link.href}
+      <div className="flex items-center gap-2">
+        {socialLinks.map(({ href, icon: Icon, label }) => (
+          <a
+            key={label}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-bold uppercase hover:text-(--neo-accent-1) transition-colors"
+            aria-label={label}
+            className="neo-btn"
+            style={{ padding: '8px', background: 'var(--neo-bg)' }}
           >
-            {link.label}
-          </Link>
+            <Icon size={18} />
+          </a>
         ))}
       </div>
     </footer>
-  );
+  )
 }
