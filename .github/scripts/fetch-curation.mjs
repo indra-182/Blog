@@ -11,11 +11,11 @@
  */
 
 const SOURCES = [
-  { name: 'Frontend Focus', url: 'https://frontendfoc.us/rss' },
   { name: 'Smashing Magazine', url: 'https://www.smashingmagazine.com/feed/' },
-  { name: 'NPM Blog', url: 'https://blog.npmjs.org/feed.xml' },
   { name: 'dev.to trending', url: 'https://dev.to/feed/tag/webdev' },
-  { name: 'GitHub Trending', url: 'https://github.com/trending.rss' },
+  { name: 'JavaScript Weekly', url: 'https://javascriptweekly.com/rss' },
+  { name: 'CSS-Tricks', url: 'https://css-tricks.com/feed/' },
+  { name: 'A List Apart', url: 'https://alistapart.com/main/feed/' },
 ]
 
 const KEYWORDS = [
