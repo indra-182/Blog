@@ -1,5 +1,6 @@
+'use client';
+
 import Link from 'next/link';
-import Image from 'next/image';
 import { ThemeToggle } from './ThemeToggle';
 
 const navLinks = [
@@ -10,30 +11,36 @@ const navLinks = [
 
 export function Navbar() {
   return (
-    <nav className="neo-card flex items-center justify-between gap-2 flex-wrap mb-8">
-      <span className="flex items-center gap-2">
-        <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/logo.svg"
-            alt="Indra's Blog"
-            width={100}
-            height={28}
-            className="h-7 w-auto"
-          />
-        </Link>
-        <ThemeToggle />
-      </span>
-      <div className="flex items-center gap-6">
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4"
+      style={{
+        background: 'var(--neo-bg)',
+        borderBottom: '3px solid var(--neo-border)',
+        boxShadow: '0 3px 0px 0px var(--neo-border)',
+      }}
+    >
+      <Link
+        href="/"
+        className="text-xl font-black uppercase tracking-tight"
+        style={{ color: 'var(--neo-text)' }}
+      >
+        Indra.dev
+      </Link>
+
+      <div className="hidden items-center gap-1 md:flex">
         {navLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="font-bold uppercase text-sm hover:text-(--neo-accent-1) transition-colors"
+            className="px-3 py-2 text-sm font-bold uppercase tracking-wide transition-colors hover:bg-black hover:text-white"
+            style={{ color: 'var(--neo-text)' }}
           >
             {link.label}
           </Link>
         ))}
       </div>
+
+      <ThemeToggle />
     </nav>
   );
 }
