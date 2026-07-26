@@ -9,21 +9,49 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
+const TABS = [
+  { label: 'All', value: '' },
+  { label: 'Articles', value: 'article' },
+  { label: 'Curation', value: 'curation' },
+] as const
+
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>
+  searchParams: Promise<{ page?: string; type?: string }>
 }) {
-  const { page: pageStr } = await searchParams
-  const page = Math.max(1, Number(pageStr) || 1)
+  const sp = await searchParams
+  const page = Math.max(1, Number(sp.page) || 1)
+  const typeFilter = sp.type === 'article' || sp.type === 'curation' ? sp.type : undefined
 
-  const { posts, total, hasNextPage } = getPaginatedPosts(page)
+  const { posts, total, hasNextPage } = getPaginatedPosts(page, 6, typeFilter)
   const categories = getAllCategories()
   const tags = getAllTags()
+
+  const totalPages = Math.ceil(total / 6) || 1
 
   return (
     <div>
       <h1 className="neo-section-title">Latest Posts</h1>
+
+      {/* filter tabs */}
+      <div className="flex gap-2 mb-6" role="tablist" aria-label="Post type filter">
+        {TABS.map((t) => {
+          const isActive = t.value === (typeFilter ?? '')
+          const href = t.value ? `/?type=${t.value}` : '/'
+          return (
+            <Link
+              key={t.value}
+              href={href}
+              role="tab"
+              aria-selected={isActive}
+              className={`neo-tab ${isActive ? 'neo-tab--active' : ''}`}
+            >
+              {t.label}
+            </Link>
+          )
+        })}
+      </div>
 
       <div className="flex flex-col sm:flex-row gap-8">
         <div className="flex-1 flex flex-col gap-6">
@@ -41,18 +69,18 @@ export default async function Home({
           >
             {page > 1 && (
               <Link
-                href={`/?page=${page - 1}`}
+                href={`/?page=${page - 1}${typeFilter ? `&type=${typeFilter}` : ''}`}
                 className="neo-btn neo-btn--accent text-sm"
               >
                 &larr; Previous
               </Link>
             )}
             <span className="text-sm font-bold">
-              Page {page} of {Math.ceil(total / 6) || 1}
+              Page {page} of {totalPages}
             </span>
             {hasNextPage && (
               <Link
-                href={`/?page=${page + 1}`}
+                href={`/?page=${page + 1}${typeFilter ? `&type=${typeFilter}` : ''}`}
                 className="neo-btn neo-btn--accent text-sm"
               >
                 Next &rarr;

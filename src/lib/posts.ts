@@ -58,13 +58,17 @@ export function getAllTags(): { name: string; count: number }[] {
 export function getPaginatedPosts(
   page: number,
   limit: number = 6,
+  typeFilter?: 'article' | 'curation',
 ): { posts: Post[]; total: number; hasNextPage: boolean } {
   const published = getAllPosts()
+  const filtered = typeFilter
+    ? published.filter((p) => p.type === typeFilter)
+    : published
   const start = (page - 1) * limit
-  const sliced = published.slice(start, start + limit)
+  const sliced = filtered.slice(start, start + limit)
   return {
     posts: sliced,
-    total: published.length,
-    hasNextPage: start + limit < published.length,
+    total: filtered.length,
+    hasNextPage: start + limit < filtered.length,
   }
 }
