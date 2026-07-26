@@ -68,6 +68,22 @@
     text-transform: uppercase;
   }
 
+  .neo-tab {
+    border: var(--border-thick) solid var(--neo-border);
+    padding: var(--space-2) var(--space-4);
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: none;
+  }
+  .neo-tab:hover {
+    background: var(--neo-accent-4);
+  }
+  .neo-tab--active {
+    background: var(--neo-accent-1);
+    color: #fff;
+    box-shadow: var(--shadow-neo);
+  }
+
   .neo-section-title {
     font-size: var(--text-3xl);
     font-weight: 900;
