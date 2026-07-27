@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# auto-generated drafts
+content/drafts/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
