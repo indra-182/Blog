@@ -39,6 +39,12 @@ yarn-error.log*
 # auto-generated drafts
 content/drafts/
 
+# velite build cache
+.velite/
+
+# search index (generated)
+public/search-index.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
