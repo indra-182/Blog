@@ -1,13 +1,13 @@
-import { posts } from '#velite'
-import readingTime from 'reading-time'
-import type { Post, TocEntry } from '@/types/post'
+import { posts } from '#velite';
+import readingTime from 'reading-time';
+import type { Post, TocEntry } from '@/types/post';
 
 function deriveSlug(p: { _path: string; slug?: string }): string {
-  return p.slug ?? (p._path.split('/').pop() ?? p._path)
+  return p.slug ?? p._path.split('/').pop() ?? p._path;
 }
 
 function computeReadingTime(body: string): number {
-  return Math.ceil(readingTime(body).minutes)
+  return Math.ceil(readingTime(body).minutes);
 }
 
 const all: Post[] = posts.map((p) => ({
@@ -15,44 +15,44 @@ const all: Post[] = posts.map((p) => ({
   slug: deriveSlug(p as { _path: string }),
   readingTimeMinutes: computeReadingTime(p.body),
   toc: (p as unknown as { toc: TocEntry[] }).toc ?? [],
-}))
+}));
 
 export function getAllPosts(): Post[] {
-  return all.filter((p) => !p.draft)
+  return all.filter((p) => !p.draft);
 }
 
 export function getPostBySlug(slug: string): Post | undefined {
-  return all.find((p) => p.slug === slug && !p.draft)
+  return all.find((p) => p.slug === slug && !p.draft);
 }
 
 export function getPostsByCategory(category: string): Post[] {
-  return getAllPosts().filter((p) => p.category === category)
+  return getAllPosts().filter((p) => p.category === category);
 }
 
 export function getPostsByTag(tag: string): Post[] {
-  return getAllPosts().filter((p) => p.tags.includes(tag))
+  return getAllPosts().filter((p) => p.tags.includes(tag));
 }
 
 export function getAllCategories(): { name: string; count: number }[] {
-  const map = new Map<string, number>()
+  const map = new Map<string, number>();
   for (const p of getAllPosts()) {
-    map.set(p.category, (map.get(p.category) ?? 0) + 1)
+    map.set(p.category, (map.get(p.category) ?? 0) + 1);
   }
   return Array.from(map.entries())
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
+    .sort((a, b) => b.count - a.count);
 }
 
 export function getAllTags(): { name: string; count: number }[] {
-  const map = new Map<string, number>()
+  const map = new Map<string, number>();
   for (const p of getAllPosts()) {
     for (const tag of p.tags) {
-      map.set(tag, (map.get(tag) ?? 0) + 1)
+      map.set(tag, (map.get(tag) ?? 0) + 1);
     }
   }
   return Array.from(map.entries())
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count)
+    .sort((a, b) => b.count - a.count);
 }
 
 export function getPaginatedPosts(
@@ -60,15 +60,15 @@ export function getPaginatedPosts(
   limit: number = 6,
   typeFilter?: 'article' | 'curation',
 ): { posts: Post[]; total: number; hasNextPage: boolean } {
-  const published = getAllPosts()
+  const published = getAllPosts();
   const filtered = typeFilter
     ? published.filter((p) => p.type === typeFilter)
-    : published
-  const start = (page - 1) * limit
-  const sliced = filtered.slice(start, start + limit)
+    : published;
+  const start = (page - 1) * limit;
+  const sliced = filtered.slice(start, start + limit);
   return {
     posts: sliced,
     total: filtered.length,
     hasNextPage: start + limit < filtered.length,
-  }
+  };
 }

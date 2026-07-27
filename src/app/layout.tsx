@@ -43,8 +43,8 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FFFDF7' },
-    { media: '(prefers-color-scheme: dark)', color: '#1A1A1A' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0d' },
   ],
 };
 
@@ -61,16 +61,23 @@ export default function RootLayout({
     >
       <head>
         <Script id="theme-init" strategy="beforeInteractive">
-          {`(function(){var t=localStorage.getItem('theme');if(!t){t='light'}document.documentElement.classList.add(t)})()`}
+          {`(function(){var t=localStorage.getItem('theme');if(!t){t='dark'}document.documentElement.classList.add(t)})()`}
         </Script>
       </head>
       <body className="min-h-dvh flex flex-col">
         <ThemeProvider>
-          <div className="flex flex-col flex-1 w-full max-w-4xl mx-auto px-4 pt-24 pb-6">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          <a className="skip-link" href="#main-content">
+            Skip to content
+          </a>
+          <Navbar />
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="flex-1 w-full mx-auto max-w-(--container) px-6 pt-18.25 pb-6"
+          >
+            {children}
+          </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

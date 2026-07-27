@@ -1,36 +1,29 @@
-import Link from 'next/link'
-import { CurationCard } from './CurationCard'
-import type { Post } from '@/types/post'
-import { formatDate } from '@/lib/utils'
+import Link from 'next/link';
+import { CurationCard } from './CurationCard';
+import type { Post } from '@/types/post';
+import { formatDate } from '@/lib/utils';
 
 export function PostHeader({ post }: { post: Post }) {
   return (
-    <header className="mb-8">
-      <div className="flex items-center gap-2 text-sm font-bold uppercase mb-4">
-        <Link
-          href={`/category/${post.category}`}
-          className="neo-tag hover:bg-(--neo-accent-3) transition-colors"
-        >
+    <header className="mb-12 max-w-4xl">
+      <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-(--text-weak)">
+        <Link href={`/category/${post.category}`} className="magic-tag magic-tag--accent">
           {post.category}
         </Link>
         <span>{formatDate(post.date)}</span>
-        <span className="ml-auto">{post.readingTimeMinutes} min read</span>
+        <span className="sm:ml-auto">{post.readingTimeMinutes} min read</span>
       </div>
 
-      <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight leading-tight">
-        {post.title}
-      </h1>
+      <h1 className="magic-heading magic-heading--gradient">{post.title}</h1>
 
-      <p className="text-lg font-medium mt-4 leading-relaxed">{post.excerpt}</p>
+      <p className="mt-5 max-w-3xl text-lg leading-relaxed text-(--text)">
+        {post.excerpt}
+      </p>
 
       {post.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="mt-5 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/tags/${tag}`}
-              className="neo-tag hover:bg-(--neo-accent-3) transition-colors"
-            >
+            <Link key={tag} href={`/tags/${tag}`} className="magic-tag">
               {tag}
             </Link>
           ))}
@@ -43,5 +36,5 @@ export function PostHeader({ post }: { post: Post }) {
         </div>
       )}
     </header>
-  )
+  );
 }

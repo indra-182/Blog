@@ -1,47 +1,42 @@
-import Link from 'next/link'
-import type { Post } from '@/types/post'
-import { formatDate } from '@/lib/utils'
+import Link from 'next/link';
+import type { Post } from '@/types/post';
+import { formatDate } from '@/lib/utils';
 
 export function PostCard({ post }: { post: Post }) {
   return (
-    <article className="neo-card flex flex-col gap-3">
-      <header className="flex items-center gap-2 text-xs font-bold uppercase">
-        <Link
-          href={`/category/${post.category}`}
-          className="neo-tag hover:bg-(--neo-accent-3) transition-colors"
-        >
+    <article className="magic-card magic-card--interactive flex flex-col gap-4">
+      <header className="flex flex-wrap items-center gap-2 text-xs text-(--text-weak)">
+        <Link href={`/category/${post.category}`} className="magic-tag magic-tag--accent">
           {post.category}
         </Link>
         <span>{formatDate(post.date)}</span>
-        <span className="ml-auto">{post.readingTimeMinutes} min read</span>
+        <span className="sm:ml-auto">{post.readingTimeMinutes} min read</span>
       </header>
 
       <div className="flex items-start gap-2">
         {post.type === 'curation' && (
-          <span className="neo-tag bg-(--neo-accent-1) text-white text-xs font-bold uppercase shrink-0 mt-1">
-            Curation
-          </span>
+          <span className="magic-tag magic-tag--accent shrink-0 mt-1">Curation</span>
         )}
         <Link href={`/posts/${post.slug}`} className="group flex-1">
-          <h2 className="text-2xl font-black uppercase tracking-tight group-hover:text-(--neo-accent-1) transition-colors">
+          <h2 className="text-2xl font-semibold tracking-[-0.045em] text-(--text-strong) group-hover:text-(--accent) transition-colors">
             {post.title}
           </h2>
         </Link>
       </div>
 
-      <p className="text-base font-medium leading-relaxed">{post.excerpt}</p>
+      <p className="text-base leading-relaxed text-(--text)">{post.excerpt}</p>
 
       {/* curation items preview */}
       {post.type === 'curation' && post.items && post.items.length > 0 && (
-        <ul className="space-y-1 mt-1">
+        <ul className="mt-1 space-y-1.5 rounded-xl border border-(--border) bg-(--surface-hover) p-3">
           {post.items.slice(0, 3).map((item, i) => (
-            <li key={i} className="text-sm font-bold">
-              <span className="text-(--neo-accent-2) mr-1">&rarr;</span>
+            <li key={i} className="text-sm text-(--text)">
+              <span className="mr-1 text-(--accent)">&rarr;</span>
               {item.title}
             </li>
           ))}
           {post.items.length > 3 && (
-            <li className="text-xs font-bold text-(--neo-accent-1)">
+            <li className="text-xs font-medium text-(--accent)">
               +{post.items.length - 3} more links
             </li>
           )}
@@ -49,18 +44,14 @@ export function PostCard({ post }: { post: Post }) {
       )}
 
       {post.tags.length > 0 && (
-        <footer className="flex flex-wrap gap-2 mt-1">
+        <footer className="mt-1 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/tags/${tag}`}
-              className="neo-tag text-xs hover:bg-(--neo-accent-3) transition-colors"
-            >
+            <Link key={tag} href={`/tags/${tag}`} className="magic-tag">
               {tag}
             </Link>
           ))}
         </footer>
       )}
     </article>
-  )
+  );
 }

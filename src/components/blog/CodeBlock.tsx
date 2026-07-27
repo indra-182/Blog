@@ -1,32 +1,27 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps } from 'react';
 
 export function CodeBlock(props: ComponentProps<'pre'>) {
   const pre = props as ComponentProps<'pre'> & {
-    children?: { props?: { className?: string; children?: unknown } }
-  }
+    children?: { props?: { className?: string; children?: unknown } };
+  };
 
   const codeEl = pre.children as
-    | { props?: { className?: string; children?: unknown } }
-    | undefined
+    { props?: { className?: string; children?: unknown } } | undefined;
 
   const lang = codeEl?.props?.className
     ?.split(' ')
     .find((c) => c.startsWith('language-'))
-    ?.replace('language-', '')
+    ?.replace('language-', '');
 
-  let title: string | undefined
-  const children = codeEl?.props?.children
+  let title: string | undefined;
+  const children = codeEl?.props?.children;
 
   if (Array.isArray(children) && children.length > 1) {
-    const first = children[0]
-    if (
-      first &&
-      typeof first === 'object' &&
-      'props' in (first as object)
-    ) {
-      const f = first as { props?: { className?: string; children?: unknown } }
+    const first = children[0];
+    if (first && typeof first === 'object' && 'props' in (first as object)) {
+      const f = first as { props?: { className?: string; children?: unknown } };
       if (f.props?.className?.includes('neo-code-title')) {
-        title = String(f.props?.children ?? '')
+        title = String(f.props?.children ?? '');
       }
     }
   }
@@ -34,14 +29,14 @@ export function CodeBlock(props: ComponentProps<'pre'>) {
   return (
     <div className="not-prose my-6">
       {title && (
-        <div className="border-2 border-b-0 border-black bg-(--neo-accent-3) px-4 py-1 text-xs font-bold uppercase">
+        <div className="rounded-t-xl border border-b-0 border-(--border) bg-(--surface-hover) px-4 py-2 font-mono text-xs text-(--text-weak)">
           {title}
         </div>
       )}
       <pre
         {...props}
-        className={`border-[3px] border-black p-4 overflow-x-auto text-sm leading-relaxed ${lang ? `language-${lang}` : ''}`}
+        className={`overflow-x-auto rounded-xl border border-(--border) bg-[#111116] p-5 font-mono text-sm leading-relaxed text-[#e5e7eb] shadow-sm ${title ? 'rounded-t-none' : ''} ${lang ? `language-${lang}` : ''}`}
       />
     </div>
-  )
+  );
 }

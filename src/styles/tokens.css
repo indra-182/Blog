@@ -1,51 +1,60 @@
 :root {
-  /* Neo palette */
-  --neo-bg: #fffdf7;
-  --neo-text: #1a1a1a;
-  --neo-border: #000000;
-  --neo-accent-1: #c2410c;
-  --neo-accent-2: #004e98;
-  --neo-accent-3: #ffd700;
-  --neo-accent-4: #e5e5e5;
-  --neo-success: #2d6a4f;
+  color-scheme: light;
 
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 2rem;
-  --text-4xl: 2.5rem;
-  --text-5xl: 3.5rem;
+  /* Once-inspired foundation */
+  --page-background: #ffffff;
+  --surface: rgb(255 255 255 / 0.72);
+  --surface-strong: #ffffff;
+  --surface-hover: #f7f7fb;
+  --text-strong: #16161d;
+  --text: #494957;
+  --text-weak: #737384;
+  --border: rgb(29 29 42 / 0.12);
+  --border-strong: rgb(29 29 42 / 0.2);
+  --accent: #5966e9;
+  --accent-strong: #7257dc;
+  --accent-soft: #eef0ff;
+  --accent-gradient: linear-gradient(110deg, #38bdf8 0%, #6366f1 46%, #a855f7 100%);
+  --success: #1f9d68;
+  --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.04);
+  --shadow-md: 0 14px 38px rgb(30 41 59 / 0.08);
+  --shadow-lg: 0 24px 64px rgb(30 41 59 / 0.13);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --font-sans: var(--font-geist-sans), Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --container: 74rem;
+  --transition-fast: 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-base: 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-
-  /* Border */
-  --border-thick: 3px;
-  --border-thicker: 4px;
-
-  /* Shadow */
-  --shadow-neo: 5px 5px 0px 0px #000;
+  /* Compatibility aliases for the existing Tailwind utility references. */
+  --neo-bg: var(--page-background);
+  --neo-text: var(--text-strong);
+  --neo-border: var(--border);
+  --neo-accent-1: var(--accent);
+  --neo-accent-2: var(--accent-strong);
+  --neo-accent-3: var(--accent-soft);
+  --neo-accent-4: var(--surface-hover);
+  --neo-success: var(--success);
 }
 
 .dark {
-  --neo-bg: #1a1a1a;
-  --neo-text: #fffdf7;
-  --neo-border: #ffffff;
-  --neo-accent-1: #e86030;
-  --neo-accent-4: #333333;
-  --shadow-neo: 5px 5px 0px 0px #fff;
+  color-scheme: dark;
+  --page-background: #0a0a0d;
+  --surface: rgb(20 20 27 / 0.72);
+  --surface-strong: #15151d;
+  --surface-hover: #1d1d27;
+  --text-strong: #f5f5f7;
+  --text: #c3c3cf;
+  --text-weak: #9494a6;
+  --border: rgb(255 255 255 / 0.1);
+  --border-strong: rgb(255 255 255 / 0.18);
+  --accent: #95a0ff;
+  --accent-strong: #c4a7ff;
+  --accent-soft: #20223c;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.25);
+  --shadow-md: 0 14px 38px rgb(0 0 0 / 0.24);
+  --shadow-lg: 0 24px 64px rgb(0 0 0 / 0.4);
 }

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n velite,next -c blue,green \"npx velite dev\" \"npx next dev --no-turbopack\"",
+    "dev": "concurrently -n velite,next -c blue,green \"npx velite dev\" \"npx next dev\"",
     "build": "npx velite build && npx next build",
     "start": "npx next start",
     "velite": "npx velite build",

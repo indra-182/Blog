@@ -1,25 +1,24 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 
 interface CalloutProps {
-  type?: 'info' | 'warning' | 'tip'
-  children?: ReactNode
+  type?: 'info' | 'warning' | 'tip';
+  children?: ReactNode;
 }
 
 export function Callout({ type = 'info', children }: CalloutProps) {
-  const bgMap = {
-    info: 'bg-(--neo-accent-4)',
-    warning: 'bg-(--neo-accent-1)',
-    tip: 'bg-(--neo-accent-3)',
-  }
+  const toneMap = {
+    info: 'border-(--border) bg-(--surface-hover) text-(--text)',
+    warning:
+      'border-[#d99b3f] bg-[#fff7e6] text-[#7a4b00] dark:bg-[#2f2413] dark:text-[#ffd995]',
+    tip: 'border-(--accent) bg-(--accent-soft) text-(--text)',
+  };
 
   return (
-    <div
-      className={`${bgMap[type]} border-[3px] border-black p-4 my-4 font-bold`}
-    >
-      <span className="uppercase text-xs block mb-1">
+    <div className={`${toneMap[type]} my-6 rounded-xl border p-4`}>
+      <span className="mb-1 block text-xs font-semibold uppercase tracking-widest">
         {type === 'info' ? 'Info' : type === 'warning' ? 'Warning' : 'Tip'}
       </span>
-      <div className="font-medium">{children}</div>
+      <div className="text-sm leading-relaxed">{children}</div>
     </div>
-  )
+  );
 }

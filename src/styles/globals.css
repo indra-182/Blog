@@ -2,131 +2,364 @@
 @import './tokens.css';
 
 @layer base {
-  body {
-    background-color: var(--neo-bg);
-    color: var(--neo-text);
-    font-family: var(--font-sans);
-    font-weight: 500;
+  html {
+    background: var(--page-background);
   }
 
+  body {
+    min-inline-size: 20rem;
+    background:
+      radial-gradient(circle at 12% 0%, rgb(99 102 241 / 0.1), transparent 28rem),
+      radial-gradient(circle at 88% 18%, rgb(56 189 248 / 0.08), transparent 24rem),
+      var(--page-background);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    transition:
+      background-color var(--transition-base),
+      color var(--transition-base);
+  }
+
+  a,
+  button,
+  input {
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast),
+      transform var(--transition-fast);
+  }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
   ::selection {
-    background-color: var(--neo-accent-3);
-    color: var(--neo-text);
+    background: var(--accent);
+    color: #fff;
   }
 }
 
 @layer components {
-  .neo-btn {
-    border: var(--border-thick) solid var(--neo-border);
-    box-shadow: var(--shadow-neo);
-    padding: var(--space-3) var(--space-6);
-    font-weight: 700;
-    cursor: pointer;
-    transition:
-      box-shadow 0.1s,
-      transform 0.1s;
+  .skip-link {
+    position: fixed;
+    inset-block-start: 0.75rem;
+    inset-inline-start: 0.75rem;
+    z-index: 100;
+    transform: translateY(-180%);
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: #fff;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 650;
   }
-  .neo-btn:hover {
-    box-shadow: 7px 7px 0px 0px var(--neo-border);
-    transform: translate(-1px, -1px);
-  }
-  .neo-btn:active {
-    box-shadow: none;
-    transform: translate(4px, 4px);
-  }
-  .neo-btn--accent {
-    background: var(--neo-accent-1);
-  }
-  .neo-btn--yellow {
-    background: var(--neo-accent-3);
+  .skip-link:focus {
+    transform: translateY(0);
   }
 
-  .neo-card {
-    border: var(--border-thick) solid var(--neo-border);
-    box-shadow: var(--shadow-neo);
-    padding: var(--space-6);
-    background: var(--neo-bg);
+  .site-nav {
+    border-block-end: 1px solid var(--border);
+    background: color-mix(in srgb, var(--page-background) 72%, transparent);
+    backdrop-filter: blur(1rem);
   }
-
-  .neo-input {
-    border: var(--border-thick) solid var(--neo-border);
-    padding: var(--space-3);
-    background: var(--neo-bg);
+  .site-nav__inner {
+    inline-size: min(100%, var(--container));
+    margin-inline: auto;
+    padding: 0.9rem 1.5rem;
+  }
+  .site-brand {
+    color: var(--text-strong);
+    font-size: 1.05rem;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+  }
+  .site-brand:hover {
+    color: var(--accent);
+  }
+  .nav-link {
+    color: var(--text-weak);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.7rem;
+    font-size: 0.875rem;
     font-weight: 500;
   }
+  .nav-link:hover {
+    background: var(--surface-hover);
+    color: var(--text-strong);
+  }
+
+  .magic-heading {
+    color: var(--text-strong);
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: 600;
+    letter-spacing: -0.065em;
+    line-height: 1.04;
+  }
+  .magic-heading--gradient {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .magic-kicker {
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+  .magic-section-title {
+    color: var(--text-strong);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    line-height: 1.08;
+    margin-block-end: 2.25rem;
+  }
+  .magic-section-title::after {
+    content: '';
+    display: block;
+    inline-size: 3rem;
+    block-size: 0.2rem;
+    margin-block-start: 0.8rem;
+    border-radius: 99px;
+    background: var(--accent-gradient);
+  }
+
+  .magic-card,
+  .neo-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(0.75rem);
+  }
+  .magic-card {
+    padding: 1.25rem;
+  }
+  .magic-card--interactive {
+    transition:
+      transform var(--transition-base),
+      border-color var(--transition-base),
+      box-shadow var(--transition-base),
+      background-color var(--transition-base);
+  }
+  .magic-card--interactive:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-0.25rem);
+  }
+
+  .magic-button,
+  .neo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-block-size: 2.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.65rem 0.95rem;
+  }
+  .magic-button--primary,
+  .neo-btn--accent {
+    background: var(--accent-gradient);
+    color: #fff;
+    box-shadow: 0 8px 20px rgb(99 102 241 / 0.2);
+  }
+  .magic-button--primary:hover,
+  .neo-btn--accent:hover {
+    box-shadow: 0 11px 24px rgb(99 102 241 / 0.32);
+    transform: translateY(-0.1rem);
+  }
+  .magic-button--outline,
+  .neo-btn {
+    border-color: var(--border);
+    background: var(--surface);
+    color: var(--text-strong);
+  }
+  .magic-button--outline:hover,
+  .neo-btn:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+  }
+  .magic-button--ghost {
+    color: var(--text);
+  }
+  .magic-button--ghost:hover {
+    background: var(--surface-hover);
+    color: var(--text-strong);
+  }
+
+  .magic-tag,
+  .neo-tag {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    background: var(--surface-hover);
+    color: var(--text-weak);
+    font-size: 0.75rem;
+    font-weight: 550;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+  }
+  .magic-tag:hover,
+  a.neo-tag:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .magic-tag--accent {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .magic-input,
+  .neo-input {
+    min-block-size: 2.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--text-strong);
+    padding-inline: 0.9rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .magic-input::placeholder,
+  .neo-input::placeholder {
+    color: var(--text-weak);
+  }
+  .magic-input:focus,
   .neo-input:focus {
-    border-color: var(--neo-accent-1);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
     outline: none;
   }
 
-  .neo-tag {
-    display: inline-block;
-    border: 2px solid var(--neo-border);
-    padding: 2px var(--space-2);
-    font-size: var(--text-xs);
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
+  .magic-tab,
   .neo-tab {
-    border: var(--border-thick) solid var(--neo-border);
-    padding: var(--space-2) var(--space-4);
-    font-weight: 700;
-    text-transform: uppercase;
-    transition: none;
+    border: 1px solid transparent;
+    border-radius: 99px;
+    background: transparent;
+    color: var(--text-weak);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 550;
+    padding: 0.5rem 0.85rem;
   }
-  .neo-tab:hover {
-    background: var(--neo-accent-4);
+  .magic-tab:hover {
+    background: var(--surface-hover);
+    color: var(--text-strong);
   }
-  .neo-tab--active {
-    background: var(--neo-accent-1);
-    color: #fff;
-    box-shadow: var(--shadow-neo);
-  }
-
-  .neo-section-title {
-    font-size: var(--text-3xl);
-    font-weight: 900;
-    text-transform: uppercase;
-    border-bottom: var(--border-thicker) solid var(--neo-border);
-    padding-bottom: var(--space-2);
-    margin-bottom: var(--space-8);
+  .magic-tab[data-active='true'] {
+    background: var(--accent-soft);
+    color: var(--accent);
   }
 
+  .magic-prose,
   .neo-prose {
-    font-size: var(--text-lg);
-    line-height: 1.7;
+    color: var(--text);
+    font-size: 1.0625rem;
+    line-height: 1.8;
   }
+  .magic-prose > * + *,
+  .neo-prose > * + * {
+    margin-block-start: 1.35em;
+  }
+  .magic-prose :is(h2, h3, h4),
+  .neo-prose :is(h2, h3, h4) {
+    color: var(--text-strong);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.18;
+  }
+  .magic-prose h2,
   .neo-prose h2 {
-    font-size: var(--text-2xl);
-    font-weight: 800;
-    margin-top: var(--space-8);
-    margin-bottom: var(--space-4);
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    margin-block-start: 2.7em;
   }
+  .magic-prose h3,
   .neo-prose h3 {
-    font-size: var(--text-xl);
-    font-weight: 700;
-    margin-top: var(--space-6);
-    margin-bottom: var(--space-3);
+    font-size: 1.3rem;
+    margin-block-start: 2em;
   }
-  .neo-prose p {
-    margin-bottom: var(--space-4);
+  .magic-prose :is(a),
+  .neo-prose :is(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    text-underline-offset: 0.18em;
   }
-  .neo-prose code {
+  .magic-prose :is(code),
+  .neo-prose :is(code) {
+    border-radius: 0.35rem;
+    background: var(--surface-hover);
+    color: var(--accent);
     font-family: var(--font-mono);
-    background: var(--neo-accent-4);
-    padding: 2px 6px;
-    border: 2px solid var(--neo-border);
-    font-size: 0.9em;
+    font-size: 0.88em;
+    padding: 0.15em 0.35em;
   }
-  .neo-prose pre {
-    border: var(--border-thick) solid var(--neo-border);
-    padding: var(--space-4);
-    overflow-x: auto;
+  .magic-prose :is(blockquote),
+  .neo-prose :is(blockquote) {
+    border-inline-start: 2px solid var(--accent);
+    color: var(--text-weak);
+    padding-inline-start: 1rem;
   }
-  .neo-prose pre code {
-    background: none;
-    border: none;
-    padding: 0;
+  .magic-prose :is(ul, ol),
+  .neo-prose :is(ul, ol) {
+    padding-inline-start: 1.3rem;
+  }
+
+  .magic-footer {
+    border-block-start: 1px solid var(--border);
+    color: var(--text-weak);
+    margin-block-start: 4rem;
+    padding-block: 1.75rem;
+  }
+  .magic-icon-button {
+    display: inline-grid;
+    place-items: center;
+    block-size: 2.4rem;
+    inline-size: 2.4rem;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-weak);
+  }
+  .magic-icon-button:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-hover);
+    color: var(--text-strong);
+    transform: translateY(-0.12rem);
+  }
+
+  .neo-btn--yellow {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --border: var(--border-strong);
   }
 }
