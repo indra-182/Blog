@@ -39,6 +39,9 @@ yarn-error.log*
 # auto-generated drafts
 content/drafts/
 
+# hermes codegen
+.hermes/
+
 # velite build cache
 .velite/
 
