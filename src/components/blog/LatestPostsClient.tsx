@@ -45,15 +45,12 @@ export function LatestPostsClient({
 
   return (
     <div>
-      <p className="magic-kicker mb-3">Notes &amp; ideas</p>
-      <h1 className="magic-section-title">
-        Latest <span className="magic-heading--gradient">Posts</span>
-      </h1>
+      <h1 className="section-heading">Latest Posts</h1>
 
       <div className="flex flex-col sm:flex-row gap-8">
         <div className="flex-1 flex flex-col gap-6">
           <div
-            className="flex w-fit flex-wrap gap-1 rounded-full border border-(--border) bg-(--surface) p-1"
+            className="flex w-fit flex-wrap gap-0.5"
             role="tablist"
             aria-label="Post type filter"
           >
@@ -78,9 +75,11 @@ export function LatestPostsClient({
             <p className="text-lg text-(--text-weak)">No posts yet.</p>
           )}
 
-          {visible.map((p) => (
-            <PostCard key={p.slug} post={p} />
-          ))}
+          <div className="divide-y divide-(--border)">
+            {visible.map((p) => (
+              <PostCard key={p.slug} post={p} />
+            ))}
+          </div>
 
           {totalPages > 1 && (
             <nav

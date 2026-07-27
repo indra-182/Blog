@@ -14,11 +14,9 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="magic-footer w-full px-6">
+    <footer className="w-full border-t border-(--border) px-6 py-6 text-(--text-weak)">
       <div className="mx-auto flex max-w-(--container) flex-col items-center justify-between gap-4 sm:flex-row">
-        <p className="text-sm">
-          &copy; {new Date().getFullYear()} Indra&apos;s Blog. All rights reserved.
-        </p>
+        <p className="text-sm">&copy; {new Date().getFullYear()} Indra&apos;s Blog.</p>
         <div className="flex items-center gap-2">
           {socialLinks.map(({ href, icon: Icon, label }) => (
             <a

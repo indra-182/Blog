@@ -66,11 +66,9 @@ export default async function PostPage({
           <PostContent body={post.body} />
         </div>
 
-        {post.toc.length > 0 && (
-          <div className="sm:w-64 shrink-0">
-            <TableOfContents items={post.toc} />
-          </div>
-        )}
+        <div className="sm:w-56 shrink-0 order-first sm:order-last">
+          {post.toc.length > 0 && <TableOfContents items={post.toc} />}
+        </div>
       </div>
     </article>
   );

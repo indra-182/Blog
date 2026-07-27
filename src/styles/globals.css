@@ -1,23 +1,43 @@
 @import 'tailwindcss';
 @import './tokens.css';
 
+@theme {
+  --color-page-bg: var(--page-background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-text-strong: var(--text-strong);
+  --color-text: var(--text);
+  --color-text-weak: var(--text-weak);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
 @layer base {
   html {
     background: var(--page-background);
+    scroll-behavior: smooth;
   }
 
   body {
     min-inline-size: 20rem;
-    background:
-      radial-gradient(circle at 12% 0%, rgb(99 102 241 / 0.1), transparent 28rem),
-      radial-gradient(circle at 88% 18%, rgb(56 189 248 / 0.08), transparent 24rem),
-      var(--page-background);
+    background: var(--page-background);
     color: var(--text);
     font-family: var(--font-sans);
     font-weight: 400;
     transition:
       background-color var(--transition-base),
       color var(--transition-base);
+  }
+
+  * {
+    border-color: var(--border);
   }
 
   a,
@@ -30,15 +50,26 @@
       box-shadow var(--transition-fast),
       transform var(--transition-fast);
   }
+
   a:focus-visible,
   button:focus-visible,
   input:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
+
   ::selection {
-    background: var(--accent);
-    color: #fff;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: balance;
   }
 }
 
@@ -60,20 +91,34 @@
     transform: translateY(0);
   }
 
+  .magic-heading {
+    color: var(--text-strong);
+    font-family: var(--font-heading);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    line-height: 1.05;
+  }
+
   .site-nav {
     border-block-end: 1px solid var(--border);
-    background: color-mix(in srgb, var(--page-background) 72%, transparent);
-    backdrop-filter: blur(1rem);
+    background: color-mix(in srgb, var(--page-background) 85%, transparent);
+    backdrop-filter: blur(0.75rem);
   }
   .site-nav__inner {
     inline-size: min(100%, var(--container));
     margin-inline: auto;
-    padding: 0.9rem 1.5rem;
+    padding: 0 1.5rem;
+    block-size: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   .site-brand {
     color: var(--text-strong);
+    font-family: var(--font-heading);
     font-size: 1.05rem;
-    font-weight: 650;
+    font-weight: 600;
     letter-spacing: -0.04em;
   }
   .site-brand:hover {
@@ -81,64 +126,37 @@
   }
   .nav-link {
     color: var(--text-weak);
-    border-radius: var(--radius-sm);
-    padding: 0.5rem 0.7rem;
+    padding: 0.35rem 0.65rem;
     font-size: 0.875rem;
     font-weight: 500;
+    border-radius: var(--radius-sm);
   }
   .nav-link:hover {
     background: var(--surface-hover);
     color: var(--text-strong);
   }
 
-  .magic-heading {
+  .section-heading {
     color: var(--text-strong);
-    font-size: clamp(2.25rem, 5vw, 4rem);
-    font-weight: 600;
-    letter-spacing: -0.065em;
-    line-height: 1.04;
-  }
-  .magic-heading--gradient {
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .magic-kicker {
-    color: var(--accent);
-    font-size: 0.75rem;
-    font-weight: 650;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-  }
-  .magic-section-title {
-    color: var(--text-strong);
+    font-family: var(--font-heading);
     font-size: clamp(2rem, 4vw, 3.25rem);
     font-weight: 600;
-    letter-spacing: -0.06em;
+    letter-spacing: -0.05em;
     line-height: 1.08;
-    margin-block-end: 2.25rem;
-  }
-  .magic-section-title::after {
-    content: '';
-    display: block;
-    inline-size: 3rem;
-    block-size: 0.2rem;
-    margin-block-start: 0.8rem;
-    border-radius: 99px;
-    background: var(--accent-gradient);
+    margin-block-end: 2rem;
   }
 
-  .magic-card,
-  .neo-card {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background: var(--surface);
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(0.75rem);
+  .post-item {
+    padding-block: 1.75rem;
   }
+  .post-item + .post-item {
+    border-block-start: 1px solid var(--border);
+  }
+
   .magic-card {
-    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
   }
   .magic-card--interactive {
     transition:
@@ -149,202 +167,215 @@
   }
   .magic-card--interactive:hover {
     border-color: var(--border-strong);
-    background: var(--surface-strong);
     box-shadow: var(--shadow-md);
-    transform: translateY(-0.25rem);
   }
 
-  .magic-button,
-  .neo-btn {
+  .magic-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.45rem;
-    min-block-size: 2.5rem;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+    gap: 0.4rem;
+    min-block-size: 2.25rem;
     cursor: pointer;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1;
-    padding: 0.65rem 0.95rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    background: transparent;
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      transform var(--transition-fast);
   }
-  .magic-button--primary,
-  .neo-btn--accent {
-    background: var(--accent-gradient);
-    color: #fff;
-    box-shadow: 0 8px 20px rgb(99 102 241 / 0.2);
-  }
-  .magic-button--primary:hover,
-  .neo-btn--accent:hover {
-    box-shadow: 0 11px 24px rgb(99 102 241 / 0.32);
-    transform: translateY(-0.1rem);
-  }
-  .magic-button--outline,
-  .neo-btn {
-    border-color: var(--border);
-    background: var(--surface);
+  .magic-button:hover {
+    background: var(--surface-hover);
     color: var(--text-strong);
   }
-  .magic-button--outline:hover,
-  .neo-btn:hover {
-    border-color: var(--border-strong);
-    background: var(--surface-hover);
+  .magic-button:active {
+    transform: scale(0.97);
+  }
+  .magic-button--primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .magic-button--primary:hover {
+    background: var(--accent-strong);
+    color: #fff;
   }
   .magic-button--ghost {
-    color: var(--text);
+    color: var(--text-weak);
   }
   .magic-button--ghost:hover {
     background: var(--surface-hover);
     color: var(--text-strong);
   }
 
-  .magic-tag,
-  .neo-tag {
+  .magic-tag {
     display: inline-flex;
     align-items: center;
-    border: 1px solid var(--border);
-    border-radius: 99px;
     background: var(--surface-hover);
     color: var(--text-weak);
-    font-size: 0.75rem;
-    font-weight: 550;
+    font-size: 0.8125rem;
+    font-weight: 450;
     line-height: 1;
-    padding: 0.4rem 0.6rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 0.25rem;
   }
   .magic-tag:hover,
-  a.neo-tag:hover {
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  a.magic-tag:hover {
     background: var(--accent-soft);
     color: var(--accent);
   }
   .magic-tag--accent {
-    border-color: transparent;
     background: var(--accent-soft);
     color: var(--accent);
+    font-weight: 500;
   }
 
-  .magic-input,
-  .neo-input {
-    min-block-size: 2.75rem;
+  .magic-input {
+    min-block-size: 2.5rem;
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     background: var(--surface);
     color: var(--text-strong);
-    padding-inline: 0.9rem;
-    box-shadow: var(--shadow-sm);
+    padding-inline: 0.8rem;
+    font-size: 0.875rem;
   }
-  .magic-input::placeholder,
-  .neo-input::placeholder {
+  .magic-input::placeholder {
     color: var(--text-weak);
   }
-  .magic-input:focus,
-  .neo-input:focus {
+  .magic-input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
     outline: none;
   }
 
-  .magic-tab,
-  .neo-tab {
-    border: 1px solid transparent;
-    border-radius: 99px;
+  .magic-tab {
+    border: none;
+    border-radius: 0.25rem;
     background: transparent;
     color: var(--text-weak);
     cursor: pointer;
     font-size: 0.875rem;
-    font-weight: 550;
-    padding: 0.5rem 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast);
   }
   .magic-tab:hover {
-    background: var(--surface-hover);
     color: var(--text-strong);
   }
   .magic-tab[data-active='true'] {
-    background: var(--accent-soft);
-    color: var(--accent);
+    background: var(--surface);
+    color: var(--text-strong);
   }
 
-  .magic-prose,
-  .neo-prose {
+  .magic-prose {
     color: var(--text);
     font-size: 1.0625rem;
-    line-height: 1.8;
+    line-height: 1.75;
+    max-width: 65ch;
   }
-  .magic-prose > * + *,
-  .neo-prose > * + * {
+  .magic-prose > * + * {
     margin-block-start: 1.35em;
   }
-  .magic-prose :is(h2, h3, h4),
-  .neo-prose :is(h2, h3, h4) {
+  .magic-prose :is(h2, h3, h4) {
     color: var(--text-strong);
+    font-family: var(--font-heading);
     font-weight: 600;
     letter-spacing: -0.04em;
-    line-height: 1.18;
+    line-height: 1.2;
   }
-  .magic-prose h2,
-  .neo-prose h2 {
-    font-size: clamp(1.6rem, 3vw, 2.1rem);
-    margin-block-start: 2.7em;
+  .magic-prose h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-block-start: 2.5em;
   }
-  .magic-prose h3,
-  .neo-prose h3 {
-    font-size: 1.3rem;
+  .magic-prose h3 {
+    font-size: 1.25rem;
     margin-block-start: 2em;
   }
-  .magic-prose :is(a),
-  .neo-prose :is(a) {
+  .magic-prose :is(a) {
     color: var(--accent);
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
     text-underline-offset: 0.18em;
   }
-  .magic-prose :is(code),
-  .neo-prose :is(code) {
-    border-radius: 0.35rem;
+  .magic-prose :is(a):hover {
+    text-decoration-color: var(--accent);
+  }
+  .magic-prose :is(code):not(pre code) {
+    border-radius: 0.25rem;
     background: var(--surface-hover);
-    color: var(--accent);
+    color: var(--accent-strong);
     font-family: var(--font-mono);
     font-size: 0.88em;
-    padding: 0.15em 0.35em;
+    padding: 0.12em 0.3em;
   }
-  .magic-prose :is(blockquote),
-  .neo-prose :is(blockquote) {
-    border-inline-start: 2px solid var(--accent);
+  .magic-prose :is(blockquote) {
+    border-inline-start: 2px solid var(--border-strong);
     color: var(--text-weak);
     padding-inline-start: 1rem;
+    font-style: italic;
   }
-  .magic-prose :is(ul, ol),
-  .neo-prose :is(ul, ol) {
+  .magic-prose :is(ul, ol) {
     padding-inline-start: 1.3rem;
   }
-
-  .magic-footer {
-    border-block-start: 1px solid var(--border);
-    color: var(--text-weak);
-    margin-block-start: 4rem;
-    padding-block: 1.75rem;
+  .magic-prose :is(img) {
+    border-radius: var(--radius-md);
+    margin-block: 2rem;
   }
+  .magic-prose :is(hr) {
+    border-color: var(--border);
+    margin-block: 2.5rem;
+  }
+  .magic-prose :is(table) {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  .magic-prose :is(th, td) {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: start;
+  }
+  .magic-prose :is(th) {
+    background: var(--surface-hover);
+    color: var(--text-strong);
+    font-weight: 600;
+  }
+
   .magic-icon-button {
     display: inline-grid;
     place-items: center;
-    block-size: 2.4rem;
-    inline-size: 2.4rem;
-    border: 1px solid var(--border);
-    border-radius: 50%;
+    block-size: 2.25rem;
+    inline-size: 2.25rem;
+    border-radius: var(--radius-sm);
     color: var(--text-weak);
   }
   .magic-icon-button:hover {
-    border-color: var(--border-strong);
     background: var(--surface-hover);
     color: var(--text-strong);
-    transform: translateY(-0.12rem);
   }
+  .magic-icon-button:active {
+    transform: scale(0.92);
+  }
+}
 
-  .neo-btn--yellow {
-    background: var(--accent-soft);
-    color: var(--accent);
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

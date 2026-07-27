@@ -21,7 +21,7 @@ function highlight(text: string, query: string) {
     re.test(part) ? (
       <mark
         key={i}
-        className="rounded bg-(--accent-soft) px-0.5 text-inherit font-medium"
+        className="rounded-sm bg-(--accent-soft) px-0.5 text-inherit font-medium"
       >
         {part}
       </mark>
@@ -47,15 +47,15 @@ export function SearchResults({ results, query, onSelect }: SearchResultsProps) 
           <Link
             href={`/posts/${doc.slug}`}
             onClick={onSelect}
-            className="block p-4 hover:bg-(--surface-hover)"
+            className="block px-4 py-3 hover:bg-(--surface-hover)"
           >
             <p className="text-xs font-medium text-(--accent)">
               {formatDate(doc.date)} &middot; {doc.category}
             </p>
-            <p className="mt-1 text-lg font-semibold tracking-tight text-(--text-strong)">
+            <p className="mt-0.5 text-base font-semibold tracking-tight text-(--text-strong)">
               {highlight(doc.title, query)}
             </p>
-            <p className="mt-1 line-clamp-2 text-sm text-(--text-weak)">
+            <p className="mt-0.5 line-clamp-2 text-sm text-(--text-weak)">
               {highlight(doc.excerpt, query)}
             </p>
           </Link>

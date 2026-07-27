@@ -5,7 +5,7 @@ import { formatDate } from '@/lib/utils';
 
 export function PostHeader({ post }: { post: Post }) {
   return (
-    <header className="mb-12 max-w-4xl">
+    <header className="mb-12">
       <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-(--text-weak)">
         <Link href={`/category/${post.category}`} className="magic-tag magic-tag--accent">
           {post.category}
@@ -14,9 +14,9 @@ export function PostHeader({ post }: { post: Post }) {
         <span className="sm:ml-auto">{post.readingTimeMinutes} min read</span>
       </div>
 
-      <h1 className="magic-heading magic-heading--gradient">{post.title}</h1>
+      <h1 className="magic-heading">{post.title}</h1>
 
-      <p className="mt-5 max-w-3xl text-lg leading-relaxed text-(--text)">
+      <p className="mt-5 max-w-2xl text-lg leading-relaxed text-(--text)">
         {post.excerpt}
       </p>
 

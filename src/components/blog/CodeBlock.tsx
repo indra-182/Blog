@@ -27,15 +27,15 @@ export function CodeBlock(props: ComponentProps<'pre'>) {
   }
 
   return (
-    <div className="not-prose my-6">
+    <div className="not-prose my-8">
       {title && (
-        <div className="rounded-t-xl border border-b-0 border-(--border) bg-(--surface-hover) px-4 py-2 font-mono text-xs text-(--text-weak)">
+        <div className="border border-b-0 border-(--border) bg-(--surface-hover) px-4 py-1.5 font-mono text-xs text-(--text-weak)">
           {title}
         </div>
       )}
       <pre
         {...props}
-        className={`overflow-x-auto rounded-xl border border-(--border) bg-[#111116] p-5 font-mono text-sm leading-relaxed text-[#e5e7eb] shadow-sm ${title ? 'rounded-t-none' : ''} ${lang ? `language-${lang}` : ''}`}
+        className={`overflow-x-auto border border-(--border) bg-[#111116] p-5 font-mono text-sm leading-relaxed text-[#e5e7eb] ${!title ? '' : 'border-t-0'}`}
       />
     </div>
   );

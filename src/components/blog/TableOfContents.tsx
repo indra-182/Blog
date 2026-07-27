@@ -24,8 +24,8 @@ function TOCLink({
     <li>
       <a
         href={href}
-        className={`block rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-(--surface-hover) hover:text-(--accent) ${
-          isActive ? 'bg-(--accent-soft) text-(--accent)' : 'text-(--text-weak)'
+        className={`block rounded-sm px-2 py-1 text-sm transition-colors hover:bg-(--surface-hover) hover:text-(--accent) ${
+          isActive ? 'text-(--accent) font-medium' : 'text-(--text-weak)'
         }`}
         style={{ paddingLeft: `${depth * 12 + 4}px` }}
       >
@@ -84,16 +84,18 @@ export function TableOfContents({ items }: TOCProps) {
   return (
     <nav aria-label="Table of contents">
       <button
-        className="magic-button magic-button--outline mb-4 w-full sm:hidden"
+        className="magic-button mb-4 w-full sm:hidden border border-(--border)"
         onClick={() => setOpen(!open)}
       >
         {open ? 'Hide' : 'Show'} Table of Contents
       </button>
 
       <div
-        className={`magic-card sm:block ${open ? 'block' : 'hidden'} p-4 sm:sticky sm:top-24`}
+        className={`magic-card p-4 sm:block sm:sticky sm:top-24 ${open ? 'block' : 'hidden'}`}
       >
-        <h2 className="mb-3 text-sm font-semibold text-(--text-strong)">On This Page</h2>
+        <h2 className="mb-3 text-xs font-semibold tracking-wider text-(--text-weak) uppercase">
+          On This Page
+        </h2>
         <ul>
           {items.map((entry, i) => (
             <TOCLink

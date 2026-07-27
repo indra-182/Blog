@@ -16,7 +16,7 @@ export async function PostContent({ body }: { body: string }) {
   });
 
   return (
-    <div className="magic-prose">
+    <div className="magic-prose mx-auto">
       <Content />
     </div>
   );

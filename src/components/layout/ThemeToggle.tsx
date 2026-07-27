@@ -1,6 +1,6 @@
 'use client';
 
-import { LuSun, LuMoon } from 'react-icons/lu';
+import { PiSun, PiMoon } from 'react-icons/pi';
 import { useTheme } from './ThemeProvider';
 import { useEffect, useState } from 'react';
 
@@ -20,7 +20,7 @@ export function ThemeToggle() {
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
-      {isDark ? <LuSun size={18} /> : <LuMoon size={18} />}
+      {isDark ? <PiSun size={18} /> : <PiMoon size={18} />}
     </button>
   );
 }

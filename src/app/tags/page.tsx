@@ -13,18 +13,13 @@ export default function TagsPage() {
 
   return (
     <div>
-      <p className="magic-kicker mb-3">Browse by topic</p>
-      <h1 className="magic-section-title">Tags</h1>
+      <h1 className="section-heading">Tags</h1>
 
       {tags.length === 0 && <p className="text-lg text-(--text-weak)">No tags yet.</p>}
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2">
         {tags.map((tag) => (
-          <Link
-            key={tag.name}
-            href={`/tags/${tag.name}`}
-            className="magic-card magic-card--interactive magic-tag text-sm"
-          >
+          <Link key={tag.name} href={`/tags/${tag.name}`} className="magic-tag text-sm">
             {tag.name} ({tag.count})
           </Link>
         ))}

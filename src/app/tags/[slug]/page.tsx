@@ -33,24 +33,24 @@ export default async function TagPage({ params }: { params: Promise<{ slug: stri
 
   return (
     <div>
-      <div className="mb-8 flex items-center gap-4">
-        <Link href="/" className="magic-button magic-button--ghost -ml-3">
+      <div className="mb-6 flex items-center gap-4">
+        <Link href="/" className="magic-button -ml-2">
           &larr; Back
         </Link>
-        <h1 className="magic-section-title mb-0 flex-1">
-          Tag: <span className="magic-heading--gradient">{slug}</span>
-        </h1>
+        <h1 className="section-heading mb-0 flex-1">Tag: {slug}</h1>
       </div>
-      <p className="mb-8 text-lg text-(--text-weak)">{posts.length} post(s)</p>
+      <p className="mb-6 text-sm text-(--text-weak)">{posts.length} post(s)</p>
 
       <div className="flex flex-col sm:flex-row gap-8">
-        <div className="flex-1 flex flex-col gap-6">
-          {posts.map((p) => (
-            <PostCard key={p.slug} post={p} />
-          ))}
+        <div className="flex-1 min-w-0">
+          <div className="divide-y divide-(--border)">
+            {posts.map((p) => (
+              <PostCard key={p.slug} post={p} />
+            ))}
+          </div>
         </div>
 
-        <div className="sm:w-64 shrink-0">
+        <div className="sm:w-60 shrink-0">
           <Sidebar categories={categories} tags={tags} />
         </div>
       </div>

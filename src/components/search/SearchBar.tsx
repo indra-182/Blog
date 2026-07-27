@@ -71,7 +71,7 @@ export function SearchBar() {
         className="magic-input w-full"
       />
       {results.length > 0 && (
-        <div className="magic-card absolute inset-x-0 top-full z-50 mt-2 max-h-96 overflow-y-auto p-0 shadow-lg">
+        <div className="magic-card absolute inset-x-0 top-full z-50 mt-2 max-h-96 overflow-y-auto">
           <SearchResults results={results} query={query} onSelect={() => setQuery('')} />
         </div>
       )}

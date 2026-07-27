@@ -7,35 +7,35 @@ interface SidebarProps {
 
 export function Sidebar({ categories, tags }: SidebarProps) {
   return (
-    <aside className="flex flex-col gap-4">
-      <div className="magic-card">
-        <h2 className="mb-4 text-sm font-semibold tracking-[-0.01em] text-(--text-strong)">
+    <aside className="flex flex-col gap-6">
+      <div>
+        <h2 className="mb-3 text-xs font-semibold tracking-wider text-(--text-weak) uppercase">
           Categories
         </h2>
         {categories.length === 0 && (
           <p className="text-sm text-(--text-weak)">No categories yet.</p>
         )}
-        <ul className="space-y-1.5">
+        <ul className="space-y-1">
           {categories.map((cat) => (
             <li key={cat.name}>
               <Link
                 href={`/category/${cat.name}`}
-                className="flex items-center justify-between rounded-lg px-2 py-1.5 text-sm text-(--text) hover:bg-(--surface-hover) hover:text-(--accent)"
+                className="flex items-center justify-between rounded-sm px-2 py-1 text-sm text-(--text) hover:bg-(--surface-hover) hover:text-(--accent)"
               >
                 <span>{cat.name}</span>
-                <span className="magic-tag text-xs">{cat.count}</span>
+                <span className="text-xs text-(--text-weak)">{cat.count}</span>
               </Link>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="magic-card">
-        <h2 className="mb-4 text-sm font-semibold tracking-[-0.01em] text-(--text-strong)">
+      <div>
+        <h2 className="mb-3 text-xs font-semibold tracking-wider text-(--text-weak) uppercase">
           Tags
         </h2>
         {tags.length === 0 && <p className="text-sm text-(--text-weak)">No tags yet.</p>}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {tags.map((tag) => (
             <Link key={tag.name} href={`/tags/${tag.name}`} className="magic-tag text-xs">
               {tag.name} ({tag.count})

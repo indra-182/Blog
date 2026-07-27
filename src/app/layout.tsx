@@ -43,8 +43,8 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0d' },
+    { media: '(prefers-color-scheme: light)', color: '#fcfcf9' },
+    { media: '(prefers-color-scheme: dark)', color: '#141413' },
   ],
 };
 
@@ -73,7 +73,7 @@ export default function RootLayout({
           <main
             id="main-content"
             tabIndex={-1}
-            className="flex-1 w-full mx-auto max-w-(--container) px-6 pt-18.25 pb-6"
+            className="flex-1 w-full mx-auto max-w-(--container) px-6 pt-20 pb-12"
           >
             {children}
           </main>
