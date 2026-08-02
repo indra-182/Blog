@@ -1,37 +1,39 @@
 import Link from 'next/link';
-import { CurationCard } from './CurationCard';
 import type { Post } from '@/types/post';
 import { formatDate } from '@/lib/utils';
+import { CurationCard } from './CurationCard';
 
 export function PostHeader({ post }: { post: Post }) {
   return (
-    <header className="mb-12">
-      <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-(--text-weak)">
-        <Link href={`/category/${post.category}`} className="magic-tag magic-tag--accent">
+    <header className="reader-header mb-12">
+      <div className="flex flex-wrap items-center gap-2">
+        <Link href={`/category/${post.category}`} className="neo-tag neo-tag--accent">
           {post.category}
         </Link>
-        <span>{formatDate(post.date)}</span>
-        <span className="sm:ml-auto">{post.readingTimeMinutes} min read</span>
+        {post.type === 'curation' && <span className="neo-tag">Kurasi</span>}
+        <span className="meta-line">{formatDate(post.date)}</span>
+        <span className="meta-line">{post.readingTimeMinutes} menit baca</span>
       </div>
 
-      <h1 className="magic-heading">{post.title}</h1>
-
-      <p className="mt-5 max-w-2xl text-lg leading-relaxed text-(--text)">
+      <h1 className="reader-title mt-6">{post.title}</h1>
+      <p className="mt-6 max-w-3xl text-lg leading-relaxed text-(--text)">
         {post.excerpt}
       </p>
 
       {post.tags.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-2">
+        <ul className="mt-6 flex flex-wrap gap-2" aria-label="Tag tulisan">
           {post.tags.map((tag) => (
-            <Link key={tag} href={`/tags/${tag}`} className="magic-tag">
-              {tag}
-            </Link>
+            <li key={tag}>
+              <Link href={`/tags/${tag}`} className="neo-tag">
+                {tag}
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
-      {post.type === 'curation' && post.items && post.items.length > 0 && (
-        <div className="mt-6">
+      {post.type === 'curation' && (
+        <div className="mt-8 max-w-3xl">
           <CurationCard items={post.items} />
         </div>
       )}

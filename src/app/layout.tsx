@@ -1,21 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import Script from 'next/script';
 import '@/styles/globals.css';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/constants';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -26,7 +15,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'id_ID',
     siteName: SITE_NAME,
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
@@ -43,8 +32,8 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fcfcf9' },
-    { media: '(prefers-color-scheme: dark)', color: '#141413' },
+    { media: '(prefers-color-scheme: light)', color: '#fffdf7' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d0e0e' },
   ],
 };
 
@@ -55,26 +44,23 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="id"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      className="h-full antialiased"
     >
       <head>
         <Script id="theme-init" strategy="beforeInteractive">
-          {`(function(){var t=localStorage.getItem('theme');if(!t){t='dark'}document.documentElement.classList.add(t)})()`}
+          {`(function(){var t=localStorage.getItem('theme');var d=t==='system'?window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light':t==='light'?'light':'dark';document.documentElement.classList.add(d)})()`}
         </Script>
       </head>
-      <body className="min-h-dvh flex flex-col">
+      <body className="flex min-h-dvh flex-col">
         <ThemeProvider>
           <a className="skip-link" href="#main-content">
-            Skip to content
+            Langsung ke isi
           </a>
           <Navbar />
-          <main
-            id="main-content"
-            tabIndex={-1}
-            className="flex-1 w-full mx-auto max-w-(--container) px-6 pt-20 pb-12"
-          >
+          <main id="main-content" tabIndex={-1} className="w-full flex-1 py-10 sm:py-14">
             {children}
           </main>
           <Footer />

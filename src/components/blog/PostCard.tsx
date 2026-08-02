@@ -5,53 +5,47 @@ import { formatDate } from '@/lib/utils';
 export function PostCard({ post }: { post: Post }) {
   return (
     <article className="post-item">
-      <div className="flex flex-wrap items-center gap-2 text-xs text-(--text-weak)">
-        <Link href={`/category/${post.category}`} className="magic-tag magic-tag--accent">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Link href={`/category/${post.category}`} className="neo-tag neo-tag--accent">
           {post.category}
         </Link>
-        <span>{formatDate(post.date)}</span>
-        <span className="sm:ml-auto">{post.readingTimeMinutes} min read</span>
+        {post.type === 'curation' && <span className="neo-tag">Kurasi</span>}
+        <span className="meta-line">{formatDate(post.date)}</span>
+        <span className="meta-line sm:ms-auto">{post.readingTimeMinutes} menit baca</span>
       </div>
 
-      <div className="mt-2 flex items-start gap-2">
-        {post.type === 'curation' && (
-          <span className="magic-tag magic-tag--accent shrink-0 mt-1">Curation</span>
-        )}
-        <Link href={`/posts/${post.slug}`} className="group flex-1">
-          <h2 className="text-xl font-semibold tracking-tight text-(--text-strong) group-hover:text-(--accent) transition-colors">
-            {post.title}
-          </h2>
-        </Link>
-      </div>
+      <Link href={`/posts/${post.slug}`} className="post-item__link mt-3 block">
+        <h2 className="post-item__title">{post.title}</h2>
+      </Link>
 
-      <p className="mt-2 text-sm leading-relaxed text-(--text) line-clamp-2">
-        {post.excerpt}
-      </p>
+      <p className="mt-2 line-clamp-3 text-(--text)">{post.excerpt}</p>
 
       {post.type === 'curation' && post.items && post.items.length > 0 && (
-        <div className="mt-3 space-y-1">
-          {post.items.slice(0, 3).map((item, i) => (
-            <p key={i} className="text-sm text-(--text)">
-              <span className="mr-1 text-(--accent)">&rarr;</span>
-              {item.title}
-            </p>
+        <ul
+          className="mt-3 space-y-1 text-sm text-(--text-weak)"
+          aria-label="Tautan dalam kurasi"
+        >
+          {post.items.slice(0, 3).map((item) => (
+            <li key={`${item.url}-${item.title}`} className="flex gap-2">
+              <span className="font-bold text-(--accent)" aria-hidden="true">
+                +
+              </span>
+              <span className="line-clamp-1">{item.title}</span>
+            </li>
           ))}
-          {post.items.length > 3 && (
-            <p className="text-xs font-medium text-(--accent)">
-              +{post.items.length - 3} more links
-            </p>
-          )}
-        </div>
+        </ul>
       )}
 
       {post.tags.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <ul className="mt-4 flex flex-wrap gap-2" aria-label="Tag tulisan">
           {post.tags.map((tag) => (
-            <Link key={tag} href={`/tags/${tag}`} className="magic-tag text-xs">
-              {tag}
-            </Link>
+            <li key={tag}>
+              <Link href={`/tags/${tag}`} className="neo-tag">
+                {tag}
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </article>
   );

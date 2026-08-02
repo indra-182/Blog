@@ -3,26 +3,25 @@
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 
-interface SearchDoc {
+export interface SearchDoc {
   slug: string;
   title: string;
   excerpt: string;
   category: string;
   tags: string[];
   date: string;
+  body?: string;
 }
 
 function highlight(text: string, query: string) {
-  if (!query.trim()) return text;
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp(`(${escaped})`, 'gi');
-  const parts = text.split(re);
-  return parts.map((part, i) =>
-    re.test(part) ? (
-      <mark
-        key={i}
-        className="rounded-sm bg-(--accent-soft) px-0.5 text-inherit font-medium"
-      >
+  const trimmedQuery = query.trim();
+  if (!trimmedQuery) return text;
+
+  const escaped = trimmedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const expression = new RegExp(`(${escaped})`, 'gi');
+  return text.split(expression).map((part, index) =>
+    part.toLocaleLowerCase() === trimmedQuery.toLocaleLowerCase() ? (
+      <mark key={`${part}-${index}`} className="bg-(--yellow) px-0.5 text-[#1a1a1a]">
         {part}
       </mark>
     ) : (
@@ -38,24 +37,21 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ results, query, onSelect }: SearchResultsProps) {
-  if (results.length === 0) return null;
+  if (results.length === 0) {
+    return <p className="search-status">Tidak ada tulisan yang cocok.</p>;
+  }
 
   return (
-    <ul className="divide-y divide-(--border)">
+    <ul aria-label="Hasil pencarian">
       {results.map((doc) => (
         <li key={doc.slug}>
-          <Link
-            href={`/posts/${doc.slug}`}
-            onClick={onSelect}
-            className="block px-4 py-3 hover:bg-(--surface-hover)"
-          >
-            <p className="text-xs font-medium text-(--accent)">
-              {formatDate(doc.date)} &middot; {doc.category}
+          <Link href={`/posts/${doc.slug}`} onClick={onSelect} className="search-result">
+            <p className="meta-line">
+              {formatDate(doc.date)} <span aria-hidden="true">&middot;</span>{' '}
+              {doc.category}
             </p>
-            <p className="mt-0.5 text-base font-semibold tracking-tight text-(--text-strong)">
-              {highlight(doc.title, query)}
-            </p>
-            <p className="mt-0.5 line-clamp-2 text-sm text-(--text-weak)">
+            <p className="search-result__title">{highlight(doc.title, query)}</p>
+            <p className="search-result__excerpt line-clamp-2">
               {highlight(doc.excerpt, query)}
             </p>
           </Link>

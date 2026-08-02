@@ -3,42 +3,40 @@ import Link from 'next/link';
 interface SidebarProps {
   categories: { name: string; count: number }[];
   tags: { name: string; count: number }[];
+  activeCategory?: string;
+  activeTag?: string;
 }
 
-export function Sidebar({ categories, tags }: SidebarProps) {
+export function Sidebar({ categories, tags, activeCategory, activeTag }: SidebarProps) {
   return (
-    <aside className="flex flex-col gap-6">
-      <div>
-        <h2 className="mb-3 text-xs font-semibold tracking-wider text-(--text-weak) uppercase">
-          Categories
-        </h2>
-        {categories.length === 0 && (
-          <p className="text-sm text-(--text-weak)">No categories yet.</p>
-        )}
-        <ul className="space-y-1">
-          {categories.map((cat) => (
-            <li key={cat.name}>
-              <Link
-                href={`/category/${cat.name}`}
-                className="flex items-center justify-between rounded-sm px-2 py-1 text-sm text-(--text) hover:bg-(--surface-hover) hover:text-(--accent)"
-              >
-                <span>{cat.name}</span>
-                <span className="text-xs text-(--text-weak)">{cat.count}</span>
-              </Link>
-            </li>
+    <aside className="browse-rail" aria-label="Jelajahi topik">
+      <div className="page-frame flex flex-col gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="meta-line text-(--accent-strong)">Kategori</span>
+          {categories.map((category) => (
+            <Link
+              key={category.name}
+              href={`/category/${category.name}`}
+              className="browse-rail__link"
+              data-active={activeCategory === category.name}
+            >
+              {category.name}{' '}
+              <span className="ms-2 text-xs opacity-70">{category.count}</span>
+            </Link>
           ))}
-        </ul>
-      </div>
-
-      <div>
-        <h2 className="mb-3 text-xs font-semibold tracking-wider text-(--text-weak) uppercase">
-          Tags
-        </h2>
-        {tags.length === 0 && <p className="text-sm text-(--text-weak)">No tags yet.</p>}
-        <div className="flex flex-wrap gap-1.5">
-          {tags.map((tag) => (
-            <Link key={tag.name} href={`/tags/${tag.name}`} className="magic-tag text-xs">
-              {tag.name} ({tag.count})
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href="/tags" className="meta-line hover:text-(--accent-strong)">
+            Tag
+          </Link>
+          {tags.slice(0, 12).map((tag) => (
+            <Link
+              key={tag.name}
+              href={`/tags/${tag.name}`}
+              className="neo-tag"
+              data-active={activeTag === tag.name}
+            >
+              {tag.name} <span className="ms-1 opacity-70">{tag.count}</span>
             </Link>
           ))}
         </div>

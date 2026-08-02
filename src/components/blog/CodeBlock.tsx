@@ -1,42 +1,35 @@
 import type { ComponentProps } from 'react';
 
-export function CodeBlock(props: ComponentProps<'pre'>) {
-  const pre = props as ComponentProps<'pre'> & {
-    children?: { props?: { className?: string; children?: unknown } };
+type CodeChild = {
+  props?: {
+    className?: string;
+    children?: unknown;
   };
+};
 
-  const codeEl = pre.children as
-    { props?: { className?: string; children?: unknown } } | undefined;
-
-  const lang = codeEl?.props?.className
-    ?.split(' ')
-    .find((c) => c.startsWith('language-'))
+export function CodeBlock(props: ComponentProps<'pre'>) {
+  const codeElement = props.children as CodeChild | undefined;
+  const className = codeElement?.props?.className ?? '';
+  const titleChild = codeElement?.props?.children;
+  const titleNode = Array.isArray(titleChild) ? titleChild[0] : undefined;
+  const title =
+    titleNode && typeof titleNode === 'object' && 'props' in titleNode
+      ? (titleNode as CodeChild).props?.className?.includes('neo-code-title')
+        ? String((titleNode as CodeChild).props?.children ?? '')
+        : undefined
+      : undefined;
+  const language = className
+    .split(' ')
+    .find((part) => part.startsWith('language-'))
     ?.replace('language-', '');
 
-  let title: string | undefined;
-  const children = codeEl?.props?.children;
-
-  if (Array.isArray(children) && children.length > 1) {
-    const first = children[0];
-    if (first && typeof first === 'object' && 'props' in (first as object)) {
-      const f = first as { props?: { className?: string; children?: unknown } };
-      if (f.props?.className?.includes('neo-code-title')) {
-        title = String(f.props?.children ?? '');
-      }
-    }
-  }
-
   return (
-    <div className="not-prose my-8">
-      {title && (
-        <div className="border border-b-0 border-(--border) bg-(--surface-hover) px-4 py-1.5 font-mono text-xs text-(--text-weak)">
-          {title}
-        </div>
-      )}
-      <pre
-        {...props}
-        className={`overflow-x-auto border border-(--border) bg-[#111116] p-5 font-mono text-sm leading-relaxed text-[#e5e7eb] ${!title ? '' : 'border-t-0'}`}
-      />
+    <div className="code-frame my-8 not-prose">
+      {title && <div className="code-frame__title">{title}</div>}
+      <pre {...props} className={title ? 'border-0' : undefined}>
+        {language && <span className="sr-only">Kode {language}</span>}
+        {props.children}
+      </pre>
     </div>
   );
 }

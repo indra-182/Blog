@@ -1,30 +1,54 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useSyncExternalStore,
+} from 'react';
 
-type Theme = 'light' | 'dark';
-type StoredTheme = Theme | 'system';
+export type Theme = 'light' | 'dark';
+export type StoredTheme = Theme | 'system';
+
+const STORAGE_KEY = 'theme';
+const THEME_CHANGE_EVENT = 'theme-change';
 
 const ThemeContext = createContext<{
   theme: StoredTheme;
   resolvedTheme: Theme;
-  setTheme: (t: StoredTheme) => void;
+  setTheme: (theme: StoredTheme) => void;
 } | null>(null);
-
-const STORAGE_KEY = 'theme';
 
 function getStoredTheme(): StoredTheme {
   if (typeof window === 'undefined') return 'dark';
-  return (localStorage.getItem(STORAGE_KEY) as StoredTheme) || 'dark';
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'dark';
 }
 
 function getSystemTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
+  if (typeof window === 'undefined') return 'dark';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function resolveTheme(stored: StoredTheme): Theme {
-  return stored === 'system' ? getSystemTheme() : stored;
+function subscribeToTheme(callback: () => void) {
+  const notify = () => callback();
+  window.addEventListener('storage', notify);
+  window.addEventListener(THEME_CHANGE_EVENT, notify);
+  return () => {
+    window.removeEventListener('storage', notify);
+    window.removeEventListener(THEME_CHANGE_EVENT, notify);
+  };
+}
+
+function subscribeToSystemTheme(callback: () => void) {
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  mediaQuery.addEventListener('change', callback);
+  return () => mediaQuery.removeEventListener('change', callback);
+}
+
+function resolveTheme(theme: StoredTheme): Theme {
+  return theme === 'system' ? getSystemTheme() : theme;
 }
 
 function applyTheme(theme: Theme) {
@@ -33,40 +57,26 @@ function applyTheme(theme: Theme) {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<StoredTheme>('dark');
-  const [resolvedTheme, setResolvedTheme] = useState<Theme>('dark');
-  const [mounted, setMounted] = useState(false);
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    getStoredTheme,
+    () => 'dark' as StoredTheme,
+  );
+  const systemTheme = useSyncExternalStore(
+    subscribeToSystemTheme,
+    getSystemTheme,
+    () => 'dark' as Theme,
+  );
+  const resolvedTheme = theme === 'system' ? systemTheme : theme;
 
   useEffect(() => {
-    const stored = getStoredTheme();
-    setThemeState(stored);
-    setResolvedTheme(resolveTheme(stored));
-    applyTheme(resolveTheme(stored));
-    setMounted(true);
-  }, []);
+    applyTheme(resolvedTheme);
+  }, [resolvedTheme]);
 
-  useEffect(() => {
-    if (!mounted) return;
-    const resolved = resolveTheme(theme);
-    setResolvedTheme(resolved);
-    applyTheme(resolved);
-  }, [theme, mounted]);
-
-  useEffect(() => {
-    if (theme !== 'system') return;
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = () => {
-      const resolved = resolveTheme('system');
-      setResolvedTheme(resolved);
-      applyTheme(resolved);
-    };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, [theme]);
-
-  const setTheme = useCallback((t: StoredTheme) => {
-    localStorage.setItem(STORAGE_KEY, t);
-    setThemeState(t);
+  const setTheme = useCallback((nextTheme: StoredTheme) => {
+    localStorage.setItem(STORAGE_KEY, nextTheme);
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
+    applyTheme(resolveTheme(nextTheme));
   }, []);
 
   return (
@@ -77,7 +87,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useTheme() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
-  return ctx;
+  const context = useContext(ThemeContext);
+  if (!context) throw new Error('useTheme harus digunakan di dalam ThemeProvider');
+  return context;
 }

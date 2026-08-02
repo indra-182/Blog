@@ -1,13 +1,15 @@
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getAllPosts, getPostBySlug } from '@/lib/posts';
-import { PostHeader } from '@/components/blog/PostHeader';
+import { notFound } from 'next/navigation';
 import { PostContent } from '@/components/blog/PostContent';
+import { PostHeader } from '@/components/blog/PostHeader';
+import { NextReads } from '@/components/blog/NextReads';
 import { TableOfContents } from '@/components/blog/TableOfContents';
-import { SITE_URL, SITE_NAME } from '@/lib/constants';
+import { SITE_NAME, SITE_URL } from '@/lib/constants';
+import { getAllPosts, getPostBySlug } from '@/lib/posts';
+import { selectNextReads } from '@/lib/editorial';
 
-export async function generateStaticParams() {
-  return getAllPosts().map((p) => ({ slug: p.slug }));
+export function generateStaticParams() {
+  return getAllPosts().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -18,6 +20,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+
   return {
     title: post.title,
     description: post.excerpt,
@@ -46,7 +49,7 @@ export default async function PostPage({
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.coverImage,
+    ...(post.coverImage ? { image: post.coverImage } : {}),
     datePublished: post.date,
     author: { '@type': 'Person', name: SITE_NAME },
     publisher: { '@type': 'Person', name: SITE_NAME },
@@ -54,22 +57,21 @@ export default async function PostPage({
   };
 
   return (
-    <article>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <PostHeader post={post} />
-
-      <div className="flex flex-col gap-10 sm:flex-row">
-        <div className="flex-1 min-w-0">
-          <PostContent body={post.body} />
+    <>
+      <article className="reader-shell page-frame">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <PostHeader post={post} />
+        <div className="reader-layout">
+          <div className="min-w-0">
+            <PostContent body={post.body} />
+          </div>
+          <TableOfContents items={post.toc} />
         </div>
-
-        <div className="sm:w-56 shrink-0 order-first sm:order-last">
-          {post.toc.length > 0 && <TableOfContents items={post.toc} />}
-        </div>
-      </div>
-    </article>
+      </article>
+      <NextReads posts={selectNextReads(getAllPosts(), post, 3)} />
+    </>
   );
 }

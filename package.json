@@ -9,7 +9,11 @@
     "velite": "npx velite build",
     "lint": "eslint",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\""
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/e2e/blog.spec.ts -g \"axe\""
   },
   "dependencies": {
     "fuse.js": "^7.5.0",
@@ -19,7 +23,9 @@
     "react-icons": "^5.7.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@colbymchenry/codegraph": "^1.5.0",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -35,6 +41,7 @@
     "shiki": "^4.3.1",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "velite": "^0.4.0"
+    "velite": "^0.4.0",
+    "vitest": "^4.1.10"
   }
 }

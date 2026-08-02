@@ -2,6 +2,12 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { defineConfig, s } from 'velite'
 import rehypePrettyCode from 'rehype-pretty-code'
 
+type CodeTitleElement = {
+  properties: {
+    className?: string[]
+  }
+}
+
 export default defineConfig({
   root: 'content',
   output: {
@@ -22,7 +28,7 @@ export default defineConfig({
             light: 'github-light',
           },
           keepBackground: false,
-          onVisitTitle(element: Record<string, any>) {
+          onVisitTitle(element: CodeTitleElement) {
             element.properties.className = ['neo-code-title']
           },
         },
@@ -31,8 +37,8 @@ export default defineConfig({
   },
   prepare(data) {
     const docs = data.posts
-      .filter((p: any) => !p.draft)
-      .map((p: any) => {
+      .filter((p) => !p.draft)
+      .map((p) => {
         const raw = readFileSync(`content/${p._path}.mdx`, 'utf-8')
         const body = raw.replace(/^---[\s\S]*?---\n/, '').trim()
         return {

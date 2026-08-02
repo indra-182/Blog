@@ -1,111 +1,80 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { TocEntry } from '@/types/post';
 
-interface TOCProps {
-  items: TocEntry[];
+function flatten(entries: TocEntry[]): string[] {
+  return entries.flatMap((entry) => [
+    entry.url.replace(/^#/, ''),
+    ...flatten(entry.items),
+  ]);
 }
 
-function TOCLink({
-  entry,
+function TocList({
+  entries,
   activeId,
-  depth,
+  depth = 0,
 }: {
-  entry: TocEntry;
+  entries: TocEntry[];
   activeId: string;
-  depth: number;
+  depth?: number;
 }) {
-  const href = entry.url;
-  const id = href.replace('#', '');
-  const isActive = activeId === id;
-
   return (
-    <li>
-      <a
-        href={href}
-        className={`block rounded-sm px-2 py-1 text-sm transition-colors hover:bg-(--surface-hover) hover:text-(--accent) ${
-          isActive ? 'text-(--accent) font-medium' : 'text-(--text-weak)'
-        }`}
-        style={{ paddingLeft: `${depth * 12 + 4}px` }}
-      >
-        {entry.title}
-      </a>
-      {entry.items.length > 0 && (
-        <ul>
-          {entry.items.map((child, i) => (
-            <TOCLink
-              key={`${child.url}-${i}`}
-              entry={child}
-              activeId={activeId}
-              depth={depth + 1}
-            />
-          ))}
-        </ul>
-      )}
-    </li>
+    <ul>
+      {entries.map((entry) => (
+        <li key={entry.url}>
+          <a
+            href={entry.url}
+            className="toc-link"
+            data-active={activeId === entry.url.replace(/^#/, '')}
+            style={{ paddingInlineStart: `${depth * 0.75}rem` }}
+          >
+            {entry.title}
+          </a>
+          {entry.items.length > 0 && (
+            <TocList entries={entry.items} activeId={activeId} depth={depth + 1} />
+          )}
+        </li>
+      ))}
+    </ul>
   );
 }
 
-export function TableOfContents({ items }: TOCProps) {
+export function TableOfContents({ items }: { items: TocEntry[] }) {
   const [activeId, setActiveId] = useState('');
-  const [open, setOpen] = useState(false);
+  const ids = useMemo(() => flatten(items), [items]);
 
   useEffect(() => {
-    if (items.length === 0) return;
-
-    const ids = items.flatMap((e) => {
-      const ids: string[] = [e.url.replace('#', '')];
-      for (const child of e.items) ids.push(child.url.replace('#', ''));
-      return ids;
-    });
-
+    if (ids.length === 0) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        }
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActiveId(visible.target.id);
       },
-      { rootMargin: '-80px 0px -80% 0px' },
+      { rootMargin: '-80px 0px -70% 0px' },
     );
-
-    for (const id of ids) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
-
+    ids.forEach((id) => {
+      const heading = document.getElementById(id);
+      if (heading) observer.observe(heading);
+    });
     return () => observer.disconnect();
-  }, [items]);
+  }, [ids]);
 
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label="Table of contents">
-      <button
-        className="magic-button mb-4 w-full sm:hidden border border-(--border)"
-        onClick={() => setOpen(!open)}
-      >
-        {open ? 'Hide' : 'Show'} Table of Contents
-      </button>
-
-      <div
-        className={`magic-card p-4 sm:block sm:sticky sm:top-24 ${open ? 'block' : 'hidden'}`}
-      >
-        <h2 className="mb-3 text-xs font-semibold tracking-wider text-(--text-weak) uppercase">
-          On This Page
-        </h2>
-        <ul>
-          {items.map((entry, i) => (
-            <TOCLink
-              key={`${entry.url}-${i}`}
-              entry={entry}
-              activeId={activeId}
-              depth={0}
-            />
-          ))}
-        </ul>
+    <nav aria-label="Daftar isi">
+      <details className="lg:hidden">
+        <summary className="neo-button neo-button--secondary w-full cursor-pointer list-none">
+          Lihat daftar isi
+        </summary>
+        <div className="toc-panel mt-3">
+          <TocList entries={items} activeId={activeId} />
+        </div>
+      </details>
+      <div className="toc-panel sticky top-24 hidden lg:block">
+        <h2 className="mb-3 font-black text-(--text-strong)">Di tulisan ini</h2>
+        <TocList entries={items} activeId={activeId} />
       </div>
     </nav>
   );
