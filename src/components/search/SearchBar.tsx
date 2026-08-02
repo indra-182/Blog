@@ -1,9 +1,9 @@
 'use client';
 
-import Fuse from 'fuse.js';
+import type Fuse from 'fuse.js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { PiArrowUpRight, PiMagnifyingGlass, PiX } from 'react-icons/pi';
 import { SearchResults, type SearchDoc } from './SearchResults';
+import { IconArrowUpRight, IconSearch, IconX } from '@/components/ui/Icons';
 
 type SearchStatus = 'idle' | 'loading' | 'ready' | 'error';
 
@@ -21,8 +21,9 @@ export function SearchBar() {
       const response = await fetch('/search-index.json', { cache: 'force-cache' });
       if (!response.ok) throw new Error('Search index request failed');
       const data = (await response.json()) as SearchDoc[];
+      const { default: FuseConstructor } = await import('fuse.js');
       setFuse(
-        new Fuse(data, {
+        new FuseConstructor(data, {
           keys: [
             { name: 'title', weight: 3 },
             { name: 'excerpt', weight: 2 },
@@ -86,7 +87,7 @@ export function SearchBar() {
         aria-label="Cari"
         onClick={() => setOpen((isOpen) => !isOpen)}
       >
-        <PiMagnifyingGlass size={18} aria-hidden="true" />
+        <IconSearch size={18} aria-hidden="true" />
         <span className="hidden sm:inline">Cari</span>
       </button>
 
@@ -118,7 +119,7 @@ export function SearchBar() {
               onClick={close}
               aria-label="Tutup pencarian"
             >
-              <PiX size={20} aria-hidden="true" />
+              <IconX size={20} aria-hidden="true" />
             </button>
           </div>
 
@@ -134,7 +135,7 @@ export function SearchBar() {
                   className="neo-button neo-button--secondary text-sm"
                   onClick={() => void loadIndex()}
                 >
-                  Coba lagi <PiArrowUpRight aria-hidden="true" />
+                  Coba lagi <IconArrowUpRight aria-hidden="true" />
                 </button>
               </div>
             )}

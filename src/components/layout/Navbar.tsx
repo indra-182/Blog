@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { PiList, PiX } from 'react-icons/pi';
 import { SearchBar } from '@/components/search/SearchBar';
+import { IconMenu, IconX } from '@/components/ui/Icons';
 import { ThemeToggle } from './ThemeToggle';
 
 const navLinks = [
@@ -67,9 +67,9 @@ export function Navbar() {
             onClick={() => setMenuOpen((open) => !open)}
           >
             {menuOpen ? (
-              <PiX size={22} aria-hidden="true" />
+              <IconX size={22} aria-hidden="true" />
             ) : (
-              <PiList size={22} aria-hidden="true" />
+              <IconMenu size={22} aria-hidden="true" />
             )}
           </button>
         </div>

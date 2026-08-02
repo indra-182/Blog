@@ -1,6 +1,6 @@
 'use client';
 
-import { PiMoon, PiSun } from 'react-icons/pi';
+import { IconMoon, IconSun } from '@/components/ui/Icons';
 import { useTheme } from './ThemeProvider';
 
 export function ThemeToggle() {
@@ -16,9 +16,9 @@ export function ThemeToggle() {
       title={isDark ? 'Ganti ke mode terang' : 'Ganti ke mode gelap'}
     >
       {isDark ? (
-        <PiSun size={20} aria-hidden="true" />
+        <IconSun size={20} aria-hidden="true" />
       ) : (
-        <PiMoon size={20} aria-hidden="true" />
+        <IconMoon size={20} aria-hidden="true" />
       )}
     </button>
   );

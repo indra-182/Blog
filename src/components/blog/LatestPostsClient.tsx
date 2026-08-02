@@ -1,7 +1,4 @@
-'use client';
-
 import Link from 'next/link';
-import { useState } from 'react';
 import { formatDate } from '@/lib/utils';
 import type { EditorialHome } from '@/lib/editorial';
 import type { Post } from '@/types/post';
@@ -53,10 +50,10 @@ function LeadBlock({ post }: { post: Post }) {
 }
 
 export function LatestPostsClient({ home, categories, tags }: LatestPostsClientProps) {
-  const [articleLimit, setArticleLimit] = useState(6);
-  const [curationLimit, setCurationLimit] = useState(4);
-  const visibleArticles = home.articles.slice(0, articleLimit);
-  const visibleCurations = home.curations.slice(0, curationLimit);
+  const visibleArticles = home.articles.slice(0, 6);
+  const olderArticles = home.articles.slice(6);
+  const visibleCurations = home.curations.slice(0, 4);
+  const olderCurations = home.curations.slice(4);
 
   if (!home.lead) {
     return (
@@ -114,14 +111,17 @@ export function LatestPostsClient({ home, categories, tags }: LatestPostsClientP
               <PostCard key={post.slug} post={post} />
             ))}
           </div>
-          {articleLimit < home.articles.length && (
-            <button
-              type="button"
-              className="neo-button neo-button--secondary mt-4"
-              onClick={() => setArticleLimit((limit) => limit + 6)}
-            >
-              Tampilkan tulisan lama
-            </button>
+          {olderArticles.length > 0 && (
+            <details className="mt-4">
+              <summary className="neo-button neo-button--secondary list-none">
+                Tampilkan tulisan lama
+              </summary>
+              <div>
+                {olderArticles.map((post) => (
+                  <PostCard key={post.slug} post={post} />
+                ))}
+              </div>
+            </details>
           )}
         </section>
       )}
@@ -143,39 +143,20 @@ export function LatestPostsClient({ home, categories, tags }: LatestPostsClientP
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {visibleCurations.map((post) => (
-              <article key={post.slug} className="neo-panel p-5">
-                <div className="meta-line">
-                  {post.category} &middot; {formatDate(post.date)}
-                </div>
-                <h3 className="mt-3 text-2xl font-black leading-tight text-(--text-strong)">
-                  <Link
-                    href={`/posts/${post.slug}`}
-                    className="hover:text-(--accent-strong)"
-                  >
-                    {post.title}
-                  </Link>
-                </h3>
-                <p className="mt-2 line-clamp-3 text-sm text-(--text)">{post.excerpt}</p>
-                <div className="mt-4">
-                  <CurationCard items={post.items} compact />
-                </div>
-                <Link
-                  href={`/posts/${post.slug}`}
-                  className="mt-4 inline-flex text-sm font-black text-(--blue) underline underline-offset-4 hover:text-(--accent-strong)"
-                >
-                  Lihat kurasi lengkap &rarr;
-                </Link>
-              </article>
+              <CurationPreview key={post.slug} post={post} />
             ))}
           </div>
-          {curationLimit < home.curations.length && (
-            <button
-              type="button"
-              className="neo-button neo-button--secondary mt-4"
-              onClick={() => setCurationLimit((limit) => limit + 4)}
-            >
-              Tampilkan kurasi lama
-            </button>
+          {olderCurations.length > 0 && (
+            <details className="mt-4">
+              <summary className="neo-button neo-button--secondary list-none">
+                Tampilkan kurasi lama
+              </summary>
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
+                {olderCurations.map((post) => (
+                  <CurationPreview key={post.slug} post={post} />
+                ))}
+              </div>
+            </details>
           )}
         </section>
       )}
@@ -192,5 +173,30 @@ export function LatestPostsClient({ home, categories, tags }: LatestPostsClientP
         </span>
       </div>
     </div>
+  );
+}
+
+function CurationPreview({ post }: { post: Post }) {
+  return (
+    <article className="neo-panel p-5">
+      <div className="meta-line">
+        {post.category} &middot; {formatDate(post.date)}
+      </div>
+      <h3 className="mt-3 text-2xl font-black leading-tight text-(--text-strong)">
+        <Link href={`/posts/${post.slug}`} className="hover:text-(--accent-strong)">
+          {post.title}
+        </Link>
+      </h3>
+      <p className="mt-2 line-clamp-3 text-sm text-(--text)">{post.excerpt}</p>
+      <div className="mt-4">
+        <CurationCard items={post.items} compact />
+      </div>
+      <Link
+        href={`/posts/${post.slug}`}
+        className="mt-4 inline-flex text-sm font-black text-(--blue) underline underline-offset-4 hover:text-(--accent-strong)"
+      >
+        Lihat kurasi lengkap &rarr;
+      </Link>
+    </article>
   );
 }

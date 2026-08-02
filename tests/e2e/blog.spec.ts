@@ -51,6 +51,18 @@ test.describe('blog reading path', () => {
     );
   });
 
+  test('navigation controls expose pointer cursors', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByRole('button', { name: /Cari$/i })).toHaveCSS(
+      'cursor',
+      'pointer',
+    );
+    await expect(page.getByRole('button', { name: /Ganti ke mode/i })).toHaveCSS(
+      'cursor',
+      'pointer',
+    );
+  });
+
   test('global search opens, finds a post, and restores focus when closed', async ({
     page,
   }) => {

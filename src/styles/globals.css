@@ -131,6 +131,7 @@
     padding-inline: 0.75rem;
     font-size: 0.875rem;
     font-weight: 800;
+    cursor: pointer;
   }
 
   .nav-link:hover,
@@ -151,6 +152,7 @@
     place-items: center;
     border: 3px solid var(--border);
     color: var(--text-strong);
+    cursor: pointer;
   }
 
   .nav-icon-button:hover {
