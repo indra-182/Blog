@@ -37,7 +37,7 @@ export default defineConfig({
   },
   prepare(data) {
     const docs = data.posts
-      .filter((p) => !p.draft)
+      .filter((p) => !p.draft && p.type === 'article')
       .map((p) => {
         const raw = readFileSync(`content/${p._path}.mdx`, 'utf-8')
         const body = raw.replace(/^---[\s\S]*?---\n/, '').trim()
@@ -66,17 +66,7 @@ export default defineConfig({
         category: s.string(),
         tags: s.array(s.string()),
         draft: s.boolean().default(false),
-        type: s.enum(['article', 'curation']),
-        items: s
-          .array(
-            s.object({
-              title: s.string(),
-              url: s.string(),
-              source: s.string().optional(),
-              insight: s.string().optional(),
-            }),
-          )
-          .optional(),
+        type: s.enum(['article']),
         body: s.mdx(),
         toc: s.toc(),
         _path: s.path(),

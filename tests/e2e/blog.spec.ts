@@ -2,6 +2,44 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 test.describe('blog reading path', () => {
+  test('API exposes article types and returns an empty curation query', async ({ request }) => {
+    const articleResponse = await request.get('/api/posts?type=article');
+    expect(articleResponse.status()).toBe(200);
+    const articles = (await articleResponse.json()) as {
+      data: { type: string }[];
+      meta: { total: number };
+    };
+
+    expect(articles.meta.total).toBeGreaterThan(0);
+    expect(articles.data.every((post) => post.type === 'article')).toBe(true);
+
+    const curationResponse = await request.get('/api/posts?type=curation');
+    expect(curationResponse.status()).toBe(200);
+    const curations = (await curationResponse.json()) as {
+      data: unknown[];
+      meta: { total: number; hasNextPage: boolean };
+    };
+
+    expect(curations.data).toEqual([]);
+    expect(curations.meta).toMatchObject({ total: 0, hasNextPage: false });
+  });
+
+  test('retired curation URLs permanently redirect to the homepage', async ({ request }) => {
+    const retiredSlugs = [
+      'frontend-digest-25-jul-2026',
+      'frontend-digest-2026-07-26',
+      'frontend-digest-2026-07-28',
+    ];
+
+    for (const slug of retiredSlugs) {
+      const response = await request.get(`/posts/${slug}`, { maxRedirects: 0 });
+      expect(response.status()).toBe(308);
+      expect(new URL(response.headers().location ?? '/', 'http://blog.test').pathname).toBe(
+        '/',
+      );
+    }
+  });
+
   test('home leads with a readable post and exposes RSS', async ({ page }) => {
     await page.goto('/');
 

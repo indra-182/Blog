@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import type { EditorialHome } from '@/lib/editorial';
 import type { Post } from '@/types/post';
-import { CurationCard } from './CurationCard';
 import { PostCard } from './PostCard';
 
 interface LatestPostsClientProps {
@@ -19,7 +18,7 @@ function LeadBlock({ post }: { post: Post }) {
     >
       <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-[#1a1a1a]">
         <span className="border-2 border-[#1a1a1a] bg-[#fffdf7] px-2 py-1 font-mono text-xs uppercase">
-          {post.type === 'article' ? 'Artikel utama' : 'Kurasi terbaru'}
+          Artikel utama
         </span>
         <span>{post.category}</span>
         <span aria-hidden="true">&middot;</span>
@@ -52,8 +51,6 @@ function LeadBlock({ post }: { post: Post }) {
 export function LatestPostsClient({ home, categories, tags }: LatestPostsClientProps) {
   const visibleArticles = home.articles.slice(0, 6);
   const olderArticles = home.articles.slice(6);
-  const visibleCurations = home.curations.slice(0, 4);
-  const olderCurations = home.curations.slice(4);
 
   if (!home.lead) {
     return (
@@ -126,41 +123,6 @@ export function LatestPostsClient({ home, categories, tags }: LatestPostsClientP
         </section>
       )}
 
-      {home.curations.length > 0 && (
-        <section className="mt-16 max-w-4xl" aria-labelledby="curation-list-title">
-          <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b-3 border-(--border) pb-3">
-            <div>
-              <h2
-                id="curation-list-title"
-                className="section-title section-title--compact"
-              >
-                Kurasi pilihan
-              </h2>
-              <p className="mt-3 text-(--text-weak)">
-                Link dan catatan singkat untuk menjaga radar tetap menyala.
-              </p>
-            </div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {visibleCurations.map((post) => (
-              <CurationPreview key={post.slug} post={post} />
-            ))}
-          </div>
-          {olderCurations.length > 0 && (
-            <details className="mt-4">
-              <summary className="neo-button neo-button--secondary list-none">
-                Tampilkan kurasi lama
-              </summary>
-              <div className="mt-4 grid gap-4 md:grid-cols-2">
-                {olderCurations.map((post) => (
-                  <CurationPreview key={post.slug} post={post} />
-                ))}
-              </div>
-            </details>
-          )}
-        </section>
-      )}
-
       <div className="mt-12 border-t-2 border-(--border-muted) pt-4">
         <Link
           href="/tags"
@@ -173,30 +135,5 @@ export function LatestPostsClient({ home, categories, tags }: LatestPostsClientP
         </span>
       </div>
     </div>
-  );
-}
-
-function CurationPreview({ post }: { post: Post }) {
-  return (
-    <article className="neo-panel p-5">
-      <div className="meta-line">
-        {post.category} &middot; {formatDate(post.date)}
-      </div>
-      <h3 className="mt-3 text-2xl font-black leading-tight text-(--text-strong)">
-        <Link href={`/posts/${post.slug}`} className="hover:text-(--accent-strong)">
-          {post.title}
-        </Link>
-      </h3>
-      <p className="mt-2 line-clamp-3 text-sm text-(--text)">{post.excerpt}</p>
-      <div className="mt-4">
-        <CurationCard items={post.items} compact />
-      </div>
-      <Link
-        href={`/posts/${post.slug}`}
-        className="mt-4 inline-flex text-sm font-black text-(--blue) underline underline-offset-4 hover:text-(--accent-strong)"
-      >
-        Lihat kurasi lengkap &rarr;
-      </Link>
-    </article>
   );
 }

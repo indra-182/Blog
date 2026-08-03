@@ -1,10 +1,3 @@
-export interface CurationItem {
-  title: string;
-  url: string;
-  source?: string;
-  insight?: string;
-}
-
 export interface TocEntry {
   title: string;
   url: string;
@@ -20,8 +13,7 @@ export interface Post {
   category: string;
   tags: string[];
   draft: boolean;
-  type: 'article' | 'curation';
-  items?: CurationItem[];
+  type: 'article';
   body: string;
   toc: TocEntry[];
   readingTimeMinutes: number;

@@ -18,7 +18,7 @@ const all: Post[] = posts.map((p) => ({
 }));
 
 export function getAllPosts(): Post[] {
-  return all.filter((p) => !p.draft);
+  return all.filter((p) => !p.draft && p.type === 'article');
 }
 
 export function getPostBySlug(slug: string): Post | undefined {
@@ -58,12 +58,10 @@ export function getAllTags(): { name: string; count: number }[] {
 export function getPaginatedPosts(
   page: number,
   limit: number = 6,
-  typeFilter?: 'article' | 'curation',
+  typeFilter?: 'article',
 ): { posts: Post[]; total: number; hasNextPage: boolean } {
   const published = getAllPosts();
-  const filtered = typeFilter
-    ? published.filter((p) => p.type === typeFilter)
-    : published;
+  const filtered = typeFilter === 'article' || !typeFilter ? published : [];
   const start = (page - 1) * limit;
   const sliced = filtered.slice(start, start + limit);
   return {

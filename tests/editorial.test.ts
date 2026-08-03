@@ -18,14 +18,13 @@ const post = (overrides: Partial<Post>): Post => ({
 });
 
 describe('buildEditorialHome', () => {
-  it('chooses the newest published article as lead and keeps the rest in deterministic groups', () => {
+  it('chooses the newest published article as lead and keeps the rest deterministic', () => {
     const posts = [
       post({ slug: 'draft', date: '2026-08-01', draft: true }),
       post({ slug: 'older-article', date: '2026-07-10' }),
       post({ slug: 'newer-article', date: '2026-07-20' }),
       post({ slug: 'same-day-b', date: '2026-07-15' }),
       post({ slug: 'same-day-a', date: '2026-07-15' }),
-      post({ slug: 'curation', date: '2026-07-25', type: 'curation' }),
     ];
     const originalOrder = posts.map(({ slug }) => slug);
 
@@ -37,26 +36,15 @@ describe('buildEditorialHome', () => {
       'same-day-b',
       'older-article',
     ]);
-    expect(home.curations.map(({ slug }) => slug)).toEqual(['curation']);
+    expect(Object.keys(home)).toEqual(['lead', 'articles']);
+    expect(home.lead?.type).toBe('article');
     expect(posts.map(({ slug }) => slug)).toEqual(originalOrder);
     expect(home.articles.some(({ slug }) => slug === 'draft')).toBe(false);
-  });
-
-  it('falls back to the newest published curation when no article exists', () => {
-    const home = buildEditorialHome([
-      post({ slug: 'older', type: 'curation', date: '2026-07-10' }),
-      post({ slug: 'newer', type: 'curation', date: '2026-07-20' }),
-      post({ slug: 'draft', type: 'article', draft: true }),
-    ]);
-
-    expect(home.lead?.slug).toBe('newer');
-    expect(home.articles).toEqual([]);
-    expect(home.curations.map(({ slug }) => slug)).toEqual(['older']);
   });
 });
 
 describe('selectNextReads', () => {
-  it('prioritizes category, shared tags, type, then deterministic date order', () => {
+  it('prioritizes category, shared tags, then deterministic date order', () => {
     const current = post({
       slug: 'current',
       category: 'agentic-ai',
@@ -78,17 +66,10 @@ describe('selectNextReads', () => {
           date: '2026-08-01',
         }),
         post({
-          slug: 'same-type',
+          slug: 'date-match',
           category: 'frontend',
           tags: ['web'],
           date: '2026-09-01',
-        }),
-        post({
-          slug: 'curation-match',
-          category: 'agentic-ai',
-          tags: ['agents'],
-          type: 'curation',
-          date: '2026-06-01',
         }),
         post({
           slug: 'draft-match',
@@ -102,10 +83,9 @@ describe('selectNextReads', () => {
     );
 
     expect(reads.map(({ slug }) => slug)).toEqual([
-      'curation-match',
       'same-category',
       'shared-tag',
-      'same-type',
+      'date-match',
     ]);
   });
 

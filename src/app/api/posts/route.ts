@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getAllPosts, getPostsByCategory, getPostsByTag } from '@/lib/posts';
 import { SITE_URL } from '@/lib/constants';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
   if (category) published = getPostsByCategory(category);
   if (tag) published = getPostsByTag(tag);
-  if (type) published = published.filter((p) => p.type === type);
+  if (type && type !== 'article') published = [];
 
   const total = published.length;
   const start = (page - 1) * limit;

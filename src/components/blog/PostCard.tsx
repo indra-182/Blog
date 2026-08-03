@@ -9,7 +9,6 @@ export function PostCard({ post }: { post: Post }) {
         <Link href={`/category/${post.category}`} className="neo-tag neo-tag--accent">
           {post.category}
         </Link>
-        {post.type === 'curation' && <span className="neo-tag">Kurasi</span>}
         <span className="meta-line">{formatDate(post.date)}</span>
         <span className="meta-line sm:ms-auto">{post.readingTimeMinutes} menit baca</span>
       </div>
@@ -19,22 +18,6 @@ export function PostCard({ post }: { post: Post }) {
       </Link>
 
       <p className="mt-2 line-clamp-3 text-(--text)">{post.excerpt}</p>
-
-      {post.type === 'curation' && post.items && post.items.length > 0 && (
-        <ul
-          className="mt-3 space-y-1 text-sm text-(--text-weak)"
-          aria-label="Tautan dalam kurasi"
-        >
-          {post.items.slice(0, 3).map((item) => (
-            <li key={`${item.url}-${item.title}`} className="flex gap-2">
-              <span className="font-bold text-(--accent)" aria-hidden="true">
-                +
-              </span>
-              <span className="line-clamp-1">{item.title}</span>
-            </li>
-          ))}
-        </ul>
-      )}
 
       {post.tags.length > 0 && (
         <ul className="mt-4 flex flex-wrap gap-2" aria-label="Tag tulisan">

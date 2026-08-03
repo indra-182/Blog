@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import type { Post } from '@/types/post';
 import { formatDate } from '@/lib/utils';
-import { CurationCard } from './CurationCard';
 
 export function PostHeader({ post }: { post: Post }) {
   return (
@@ -10,7 +9,6 @@ export function PostHeader({ post }: { post: Post }) {
         <Link href={`/category/${post.category}`} className="neo-tag neo-tag--accent">
           {post.category}
         </Link>
-        {post.type === 'curation' && <span className="neo-tag">Kurasi</span>}
         <span className="meta-line">{formatDate(post.date)}</span>
         <span className="meta-line">{post.readingTimeMinutes} menit baca</span>
       </div>
@@ -30,12 +28,6 @@ export function PostHeader({ post }: { post: Post }) {
             </li>
           ))}
         </ul>
-      )}
-
-      {post.type === 'curation' && (
-        <div className="mt-8 max-w-3xl">
-          <CurationCard items={post.items} />
-        </div>
       )}
     </header>
   );
