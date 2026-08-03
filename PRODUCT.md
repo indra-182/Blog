@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Indonesian frontend and AI builders who want useful, trustworthy writing and curated links they can read intentionally and apply in their work.
+Indonesian frontend and AI builders who want useful, trustworthy articles they can read intentionally and apply in their work.
 
 ## Product Purpose
 
@@ -16,19 +16,20 @@ This personal blog is an independent content source for the connected portfolio 
 
 ## Positioning
 
-The blog combines authored long-form articles with compact daily technical curation, keeping both content types discoverable while giving authored articles priority in the reading path.
+The blog publishes authored long-form articles only, giving each article a focused reading path and a relevant next read.
 
 ## Operating Context
 
 - Content is authored as MDX files in `content/posts` and processed by Velite.
-- Published articles and curations are consumed by the blog UI, RSS, sitemap, search index, and the public `/api/posts` feed.
+- Published articles are consumed by the blog UI, RSS, sitemap, search index, and the public `/api/posts` feed.
 - The shell and system copy are Indonesian-first; authored post titles and bodies keep their source language.
 - The blog is deployed independently and exposes stable public URLs for the portfolio ecosystem.
 
 ## Capabilities and Constraints
 
-- Preserve the existing Velite/MDX pipeline, `Post` fields, public URLs, SEO metadata, RSS, sitemap, robots, and `/api/posts` response shape and behavior.
-- Support published `article` and `curation` posts, with the newest article leading the home page and the newest curation as fallback when no article exists.
+- Preserve the existing Velite/MDX pipeline, article `Post` fields, public URLs, SEO metadata, RSS, sitemap, robots, and `/api/posts` response shape and behavior.
+- Publish only `article` posts. Keep the public API `type` field for compatibility: `type=article` returns articles, while `type=curation` remains a successful empty query.
+- Retired curation post URLs permanently redirect to `/` and do not appear on public surfaces.
 - Keep categories as primary topic navigation and tags as secondary navigation.
 - Keep client-side Fuse.js search backed by `/search-index.json`; do not add a backend search endpoint.
 - Preserve localStorage key `theme` and legacy `system` theme behavior.
@@ -45,9 +46,10 @@ The repository's real content and contracts are the source of truth: `content/po
 ## Product Principles
 
 - Make the reading path obvious before making the interface expansive.
-- Let authored articles lead; let curation support discovery and context.
+- Keep authored articles at the center of discovery and the reading path.
 - Keep topic navigation predictable: categories first, tags second.
 - Preserve stable ecosystem contracts while improving the reader experience.
+- Preserve the public API compatibility behavior for legacy type queries.
 - Treat empty, loading, error, keyboard, and narrow-screen states as real product states.
 
 ## Accessibility & Inclusion
