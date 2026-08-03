@@ -12,6 +12,8 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
     "test": "vitest run",
     "test:watch": "vitest",
+    "generate:article": "bun run scripts/generate-article.ts",
+    "validate:articles": "bun run scripts/validate-articles.ts",
     "test:e2e": "playwright test",
     "test:a11y": "playwright test tests/e2e/blog.spec.ts -g \"axe\""
   },

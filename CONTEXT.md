@@ -11,6 +11,10 @@
 | Tulisan utama           | Artikel terbit terbaru yang menjadi entri prioritas tertinggi di beranda, atau keadaan kosong jika belum ada artikel.            |
 | Bacaan berikutnya       | Artikel yang direkomendasikan setelah tulisan aktif, diurutkan berdasarkan kategori, tag bersama, dan tanggal.                   |
 | Kategori                | Taksonomi topik utama. Satu tulisan memiliki satu kategori dan rute kategori adalah jalur jelajah utama.                         |
+| Antrian artikel         | Daftar rencana artikel berurutan; entri `pending` pertama adalah satu-satunya kandidat publikasi berikutnya.                  |
+| Status publikasi        | `pending` berarti belum ada artikel di `main`; `published` berarti artikel dan transisi antriannya telah masuk dalam commit yang sama. |
+| Sumber tersimpan        | URL yang tervalidasi beserta catatan fakta editorial di antrian; generator memakai catatan tersebut tanpa mengambil URL.     |
+| Artikel terotomasi      | Artikel yang memperoleh metadata dari antrian dan hanya memperoleh excerpt serta isi dari model.                            |
 | Tag                     | Taksonomi sekunder lintas topik. Satu tulisan dapat memiliki banyak tag untuk penemuan yang lebih sempit.                        |
 | Baca dengan sengaja     | Hasil produk ketika pembaca memahami nilai tulisan, mencapai isi penting, lalu mendapat bacaan relevan berikutnya.               |
 | Salinan antarmuka       | Teks antarmuka, navigasi, filter, kosong, error, loading, dan sistem yang menggunakan bahasa Indonesia sebagai default.          |

@@ -1,0 +1,115 @@
+name: Generate article
+
+on:
+  schedule:
+    - cron: '10 17 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: article-publication
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: read
+  models: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for an existing article pull request
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          open_count="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("automation/article/"))] | length')"
+          if [ "$open_count" -gt 0 ]; then
+            echo "An article pull request is already open. Skipping generation."
+            echo "## Article publication" >> "$GITHUB_STEP_SUMMARY"
+            echo "Skipped because an automation article pull request is already open." >> "$GITHUB_STEP_SUMMARY"
+            echo 'skip=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git ls-remote --exit-code --heads "https://github.com/$GITHUB_REPOSITORY.git" 'automation/article/*' >/dev/null 2>&1; then
+            echo "A stale automation article branch exists. Refusing to call the model."
+            exit 1
+          fi
+          echo 'skip=false' >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.skip != 'true'
+        with:
+          ref: main
+
+      - uses: oven-sh/setup-bun@v2
+        if: steps.guard.outputs.skip != 'true'
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        if: steps.guard.outputs.skip != 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Generate and validate the next article
+        id: generate
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          report="$(bun run generate:article)"
+          echo "$report"
+          echo "$report" >> "$GITHUB_STEP_SUMMARY"
+          status="$(node -e 'console.log(JSON.parse(process.argv[1]).status)' "$report")"
+          if [ "$status" = "empty" ]; then
+            echo "No pending article. Generation skipped."
+            exit 0
+          fi
+          slug="$(node -e 'console.log(JSON.parse(process.argv[1]).slug)' "$report")"
+          echo "slug=$slug" >> "$GITHUB_OUTPUT"
+
+      - name: Create repository-scoped article bot token
+        if: steps.guard.outputs.skip != 'true' && steps.generate.outputs.slug != ''
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ARTICLE_BOT_APP_ID }}
+          private-key: ${{ secrets.ARTICLE_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Commit and push the generated article
+        if: steps.guard.outputs.skip != 'true' && steps.generate.outputs.slug != ''
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          SLUG: ${{ steps.generate.outputs.slug }}
+        run: |
+          set -euo pipefail
+          branch="automation/article/$SLUG"
+          git checkout -b "$branch"
+          git config user.name 'article-bot[bot]'
+          git config user.email 'article-bot[bot]@users.noreply.github.com'
+          git add content/article-queue.json "content/posts/$SLUG.mdx"
+          if [ "$(git diff --cached --name-only | wc -l)" -ne 2 ]; then
+            echo 'The generator changed an unexpected set of files.'
+            exit 1
+          fi
+          git commit -m "content: publish $SLUG"
+          git push "https://x-access-token:$APP_TOKEN@github.com/$GITHUB_REPOSITORY.git" "$branch"
+
+      - name: Open the article pull request
+        if: steps.guard.outputs.skip != 'true' && steps.generate.outputs.slug != ''
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          SLUG: ${{ steps.generate.outputs.slug }}
+        run: |
+          gh pr create \
+            --repo "$GITHUB_REPOSITORY" \
+            --base main \
+            --head "automation/article/$SLUG" \
+            --title "content: publish $SLUG" \
+            --body "Automated article generated from the validated queue. The article-gate workflow must pass before squash auto-merge is enabled."

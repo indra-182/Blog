@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "article-001",
+      "slug": "membangun-agent-deterministik",
+      "title": "Membangun Agent Deterministik yang Mudah Diaudit",
+      "date": "2026-08-03",
+      "editorial": {
+        "audience": "Pengembang aplikasi yang mulai membangun workflow agent",
+        "angle": "Menjelaskan cara membuat keputusan agent dapat dilacak dan diuji",
+        "tone": "Praktis, jernih, dan kritis"
+      },
+      "category": "agentic-ai",
+      "tags": ["agent", "ai", "tutorial"],
+      "sectionBriefs": [
+        "Definisikan determinisme dan mengapa ia penting untuk workflow agent.",
+        "Uraikan cara memisahkan state, aturan, dan keputusan model.",
+        "Tunjukkan strategi pengujian untuk input dan output yang dapat diprediksi.",
+        "Jelaskan trade-off antara fleksibilitas dan auditabilitas."
+      ],
+      "practicalExamples": [
+        "Pipeline klasifikasi tiket dukungan yang menyimpan alasan setiap keputusan."
+      ],
+      "sources": [
+        {
+          "title": "Python dataclasses",
+          "url": "https://docs.python.org/3/library/dataclasses.html",
+          "note": "Dataclass menyediakan cara eksplisit untuk memodelkan data terstruktur."
+        },
+        {
+          "title": "LangGraph documentation",
+          "url": "https://langchain-ai.github.io/langgraph/",
+          "note": "LangGraph mendokumentasikan pemodelan workflow agent sebagai graph dengan state."
+        }
+      ],
+      "status": "pending",
+      "attempts": 0,
+      "lastError": null
+    },
+    {
+      "id": "article-002",
+      "slug": "merancang-evaluasi-agent",
+      "title": "Merancang Evaluasi Agent yang Dapat Dipercaya",
+      "date": "2026-08-10",
+      "editorial": {
+        "audience": "Engineer yang mengevaluasi kualitas agent produksi",
+        "angle": "Menyusun evaluasi berbasis contoh nyata dan kriteria yang transparan",
+        "tone": "Analitis dan dapat dipraktikkan"
+      },
+      "category": "agentic-ai",
+      "tags": ["agent", "evaluation", "ai"],
+      "sectionBriefs": [
+        "Bedakan evaluasi kualitas jawaban dan kualitas proses.",
+        "Pilih dataset kecil yang mewakili risiko nyata.",
+        "Gunakan rubrik yang dapat dibaca manusia dan mesin.",
+        "Jelaskan cara membaca regresi dari waktu ke waktu."
+      ],
+      "practicalExamples": [
+        "Matriks evaluasi untuk agent yang merangkum laporan insiden."
+      ],
+      "sources": [
+        {
+          "title": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "note": "Kerangka NIST mengatur praktik untuk mengelola risiko sistem AI secara terstruktur."
+        }
+      ],
+      "status": "pending",
+      "attempts": 0,
+      "lastError": null
+    }
+  ]
+}

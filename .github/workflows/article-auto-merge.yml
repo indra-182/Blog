@@ -1,0 +1,59 @@
+name: Article auto-merge
+
+on:
+  workflow_run:
+    workflows: ['Article gate']
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  enable-auto-merge:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify the gated article pull request
+        id: verify
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EXPECTED_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+          EXPECTED_BOT: ${{ vars.ARTICLE_BOT_LOGIN }}
+        run: |
+          set -euo pipefail
+          case "$EXPECTED_BRANCH" in
+            automation/article/*) ;;
+            *) echo 'The gated branch is not an article automation branch.'; exit 1 ;;
+          esac
+          test -n "$EXPECTED_BOT"
+          prs="$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --head "$EXPECTED_BRANCH" --json number,headRefName,headRefOid,headRepository,author)"
+          node -e '
+            const prs = JSON.parse(process.argv[1]);
+            const [pr] = prs;
+            if (prs.length !== 1) throw new Error(`expected exactly one open PR, found ${prs.length}`);
+            if (pr.headRefName !== process.env.EXPECTED_BRANCH) throw new Error("branch mismatch");
+            if (pr.headRefOid !== process.env.EXPECTED_SHA) throw new Error("head SHA is no longer gated");
+            if (pr.headRepository?.nameWithOwner !== process.env.GITHUB_REPOSITORY) throw new Error("head repository mismatch");
+            if (pr.author?.login !== process.env.EXPECTED_BOT) throw new Error("author is not the configured article bot");
+            console.log(`number=${pr.number}`);
+          ' "$prs" >> "$GITHUB_OUTPUT"
+
+      - name: Create repository-scoped article bot token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ARTICLE_BOT_APP_ID }}
+          private-key: ${{ secrets.ARTICLE_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: read
+          permission-pull-requests: write
+
+      - name: Enable squash auto-merge
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PR_NUMBER: ${{ steps.verify.outputs.number }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: gh pr merge "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --auto --squash --match-head-commit "$HEAD_SHA"
